@@ -1,0 +1,24 @@
+program        -> statement { ";" statement }
+statement      -> assignment | expr | function | function_call
+assignment     -> id "=" expr
+expr           -> term { ("+" | "-") term }
+term           -> factor { ("*" | "/") factor }
+factor         -> ["-"] (number | id | "(" expr ")") | bool_expr | function_call
+number         -> digit { digit }
+id             -> letter { letter | digit }
+bool_expr      -> bool_term { "or" bool_term }
+bool_term      -> bool_factor { "and" bool_factor }
+bool_factor    -> "not" bool_factor | "(" bool_expr ")" | comparison
+comparison     -> expr ("==" | "!=" | "<" | ">" | "<=" | ">=") expr
+digit          -> "0".."9"
+letter         -> "a".."z" | "A".."Z"
+comment        -> "#" {any_character_except_newline} newline
+function           -> function_header function_body
+function_header    -> "[" [id] function_modifier 
+function_modifier -> "!" "]" | "?" "]" function_condition | "]" [function_args]
+function_condition -> "[" bool_expr "]"
+function_args      -> "["id {"," id}"]"
+function_body      -> "{" program "}" function_return | "{" program "}" | function_return 
+function_return    -> "(" (expr) ")"
+function_call      -> id call_args
+call_args = "[" [expr { "," expr }] "]"

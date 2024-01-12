@@ -1,0 +1,68 @@
+# Entry in this case is function id
+[entry]
+{
+	logic
+	...
+	...
+}(return value (optional))
+
+# Argument handling
+[entry][arg1, arg2, ...]
+{
+	logic
+	...
+	...
+}(return value (optional))
+
+# ! id means an anonymous function that will be called immediately
+[!]
+{
+	logic
+	...
+	...
+}(return value (optional))
+
+# ? is analog of if statement, also called immediately
+[?][boolean_expression]
+{
+	logic
+	...
+	...
+}(return value (optional))
+
+# We can also make mixes like:
+[entry!]
+{
+}()
+
+[entry?][boolean_statment]
+{
+}()
+
+# Note: when we recall a function with ? modifier, it will be called only when the condition field is true
+
+# This one is not allowed
+[entry!][arg1, arg2, ...]
+{
+}()
+
+# Basic while loops
+[?][boolean_statment]
+{
+	# logic
+	# incrementing index
+}([this])
+# Calling itself with special keyword 'this'
+
+# Notes:
+'#' is for comments
+
+[]
+{
+}() # <- () here are optional
+
+# Call syntax
+
+id[]
+or
+id[args]
