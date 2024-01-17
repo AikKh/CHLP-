@@ -19,18 +19,12 @@ string readFileIntoString(const string& filename) {
     }
 }
 
-//void PrintAst(Node* node, int level = 0) {
-//    if (node) {
-//        cout << string(level, ' ') << node->GetValue().GetText() << endl;
-//        PrintAst(node->GetLeft(), level + 2);
-//        PrintAst(node->GetRight(), level + 2);
-//    }
-//}
 
 int main()
 {
+
     // Opening
-    string filename = "tests/ParserTest.dr";
+    string filename = "tests/ParserTest2.dr";
     //string filename = "tests/lexerTest.dr";
     string content = readFileIntoString(filename);
 

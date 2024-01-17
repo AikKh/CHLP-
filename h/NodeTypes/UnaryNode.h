@@ -1,18 +1,18 @@
 #pragma once
 
-#include "../Node.h"
+#include "LeafNode.h"
 
-class UnaryNode : public Node {
+class UnaryNode : public LeafNode {
 
 public:
-	UnaryNode(Token value, Node* next = nullptr) : Node(value), _next(next) {}
+	UnaryNode(Token value, Node* next = nullptr) : LeafNode(value), _next(next) {}
 
 	~UnaryNode() {
 		delete _next;
 	}
 
-	void Print(int level = 0) override {
-		Node::Print(level);
+	void Print(int level = 0) const override {
+		LeafNode::Print(level);
 		_next->Print(level + Indedention);
 	}
 

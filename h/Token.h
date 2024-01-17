@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Keywords.h"
+#include "includes.h"
 
 struct Token {
 public:
@@ -20,8 +20,12 @@ public:
 	Token(Type, string, int line = 0, int column = 0);
 	std::string ToString() const;
 
+	bool Equals(Type type, string text) const {
+		return _type == type && _text == text;
+	}
+
 	bool operator==(const Token& other) const {
-		return this->_type == other._type && this->_text == other._text;
+		return _type == other._type && _text == other._text;
 	}
 
 	bool operator!=(const Token& other) const {
@@ -34,6 +38,10 @@ public:
 
 	const string& GetText() const {
 		return _text;
+	}
+
+	static const Token Default() {
+		return Token(Token::UNKNOWN, "");
 	}
 
 	int Line;

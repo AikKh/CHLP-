@@ -1,0 +1,21 @@
+c = 6;
+a = (5 + 2) - 5 * 4;
+
+[immidiate!]
+{
+    a = 2 + 3 * 4;
+}
+
+[some_if_statement?][c == 6 or a == 5]
+(
+    a
+)
+
+[sum][a, b, c]{
+    s = a + b + c;
+}(s)
+
+
+
+
+

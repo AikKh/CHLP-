@@ -4,8 +4,9 @@ Token::Token(Type type, string text, int line, int column)
 {
 	_type = type;
 	_text = text;
-	this->Line = line;
-	this->Column = column;
+
+	Line = line;
+	Column = column;
 }
 
 string Token::ToString() const

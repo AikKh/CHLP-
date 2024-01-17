@@ -2,20 +2,19 @@
 
 #include "../Node.h"
 
-class ListNode : public Node {
+class CompoundNode : public Node {
 
 public:
-	ListNode(string text) : Node(Token(Token::Type::UNKNOWN, text)) {}
 
-	~ListNode() {
+	~CompoundNode() {
 		for (auto& node : nodes) {
 			delete node;
 		}
 	}
 
-	void Print(int level = 0) override {
-		Node::Print(level);
-		
+	void Print(int level = 0) const override {
+		cout << string(level, ' ') << "Compound node:" << endl;
+
 		for (auto& node : nodes) {
 			node->Print(level + Indedention);
 		}

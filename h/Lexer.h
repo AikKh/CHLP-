@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ErrorHandler.h"
+#include "../h/AllOperators.h"
 
 class Lexer {
 public:
@@ -69,10 +70,13 @@ private:
 		if (c == '.') {
 			if (!hasPoint)
 				return hasPoint = true;
-			//throw std::runtime_error("invalid floating point");
 			error.ReportAt("Invalid floating point", SOURCE_ERROR, _currLine, _currColumn);
 		}
 		return false;
+	}
+
+	inline void ShiftColumn(int start, int end) {
+		_currColumn += (end - start + 1);
 	}
 
 	static bool IsScope(char c) {

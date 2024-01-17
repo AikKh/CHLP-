@@ -5,18 +5,9 @@
 
 class Node {
 public:
-	Node(Token value) : _value(value){}
-
-	~Node() = default;
-
-	virtual void Print(int level = 0)
-	{
-		cout << string(level, ' ') << _value.GetText() << endl;
-	}
+	virtual void Print(int level = 0) const = 0;
 
 protected:
-	Token _value;
-
 	// For printing
 	static const int Indedention = 3;
 };

@@ -43,7 +43,6 @@ void Lexer::SetUp()
     
     charToType['^'] = OPERATOR;
 
-
     charToType['!'] = OPERATOR;
     charToType['?'] = OPERATOR;
 
@@ -57,7 +56,7 @@ void Lexer::SetUp()
 
     _hasSetUp = true;
     _currLine = 1;
-    _currColumn = 1;
+    _currColumn = 0;
 }
 
 Lexer::Type Lexer::GetType(char c)
@@ -72,22 +71,18 @@ Lexer::Type Lexer::GetType(char c)
 void Lexer::LexCode(const string& code, vector<Token>& tokens)
 {
     int prevIndex = 0;
-    bool inComment = false;
 
     if (!_hasSetUp)
         SetUp();
 
-
     for (int i = 0; i < code.size(); ++i) {
         prevIndex = i;
         Type currType = GetType(code[i]);
-        Token token(Token::Type::UNKNOWN, "");
-        
         
         switch (currType)
         {
         case LETTER:
-            token = HandleLetter(code, i);
+            tokens.push_back(HandleLetter(code, i));
             break;
 
         case WHITESPACE:
@@ -95,47 +90,40 @@ void Lexer::LexCode(const string& code, vector<Token>& tokens)
             break;
 
         case OPERATOR:
-            token = HandleOperator(code, i);
+            tokens.push_back(HandleOperator(code, i));
             break;
 
         case DIGIT:
-            token = HandleDigit(code, i);
+            tokens.push_back(HandleDigit(code, i));
             break;
         
         case NEW_LINE:
             _currLine++;
             _currColumn = 0;
-            inComment = false;
+            break; // AAAAAAAAAAAAAAAAAAAAA
 
         case LINE_BREAK:
-            if (!tokens.empty() && tokens.back().GetType() == Token::Type::LINE_END) {
+            if (tokens.empty() || tokens.back().GetType() == Token::LINE_END)
                 break;
-            }
-            if (!tokens.empty())
-                token = MakeToken(Token::Type::LINE_END, ";");
+            tokens.push_back(MakeToken(Token::Type::LINE_END, ";"));
             break;
 
         case COMMENT:
-            inComment = true;
+            GoForwardWhile(code, i, [](Type type) {
+                return type != NEW_LINE;
+            });
             break;
 
         default:
-            cout << "Unknown symbol at " << i << endl;
+            error.ReportAt("Unknown symbol " + string(1, code[i]), ErrorPriority::SOURCE_ERROR, _currLine, _currColumn);
             break;
         }
 
-        _currColumn += (i - prevIndex + 1);
-
-        if (!inComment && token.GetType() != Token::Type::UNKNOWN)
-            tokens.push_back(token);
+        ShiftColumn(prevIndex, i);
     }
 
-    //if (tokens.back().GetType() == Token::Type::LINE_END) {
-    //    //tokens.push_back(MakeToken(Token::Type::LINE_END, ";"));
+    //if (tokens.back().GetType() == Token::Type::LINE_END)
     //    tokens.pop_back();
-    //}
-    if (tokens.back().GetType() != Token::Type::LINE_END)
-        tokens.push_back(MakeToken(Token::Type::LINE_END, ";"));
 
     tokens.push_back(MakeToken(Token::Type::END_OF_FILE, std::to_string(EOF)));
 }
@@ -157,16 +145,10 @@ Token Lexer::HandleLetter(const string& code, int& i) {
     Token::Type type = Token::Type::IDENTIFIER;
     string text = GetSub(code, start, i + 1);
 
-    if (!hasDigit) {
-        /// TODO:
-        /// Check for keywords
-        if (Keywords::IsKeyword(text)) {
-            type = Token::Type::OPERATOR;
-        }
+    if (!hasDigit && operators.IsOperator(text)) {
+        /// Check for operators
+        type = Token::Type::OPERATOR;
     }
-#ifndef NDEBUG
-    //cout << text << endl;
-#endif
 
     return MakeToken(type, text);
 }

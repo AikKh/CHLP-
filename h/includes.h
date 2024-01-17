@@ -1,5 +1,9 @@
 #include <iostream>
 #include <cmath>
+#include <iterator>
+#include <fstream>
+#include <limits.h>
+#include <stdexcept>
 
 #include <string>
 using std::string;
@@ -15,10 +19,6 @@ using std::vector;
 
 #include <unordered_map>
 using std::unordered_map;
-
-#include <iterator>
-
-#include <fstream>
 
 using std::cout;
 using std::endl;
