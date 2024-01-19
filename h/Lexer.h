@@ -54,7 +54,7 @@ private:
 
 		do {
 			nextType = GetType(code[++i]);
-		} while (condition(nextType) && nextType != END_OF_FILE);
+		} while (condition(nextType) && i < code.size());
 
 		i--;
 		return start;
@@ -81,6 +81,10 @@ private:
 
 	static bool IsScope(char c) {
 		return c == '[' || c == '{' || c == '(' || c == ']' || c == '}' || c == ')';
+	}
+
+	static bool IsComma(char c) {
+		return c == ',';
 	}
 
 	static string GetSub(const string& code, int start, int end) {

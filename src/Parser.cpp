@@ -36,6 +36,9 @@ bool Parser::Assert(Token token, string text) const
 
 bool Parser::SearchOperator(Token opToken, Operator& op, Operator::InputTaken input)
 {
+	if (opToken.GetText() == ",") {
+		int a = 5;
+	}
 	if (!operators.FindOperatorByText(opToken.GetText(), op, input)) {
 		error.ReportAt("Unrecognized operator " + opToken.GetText(), ErrorPriority::SOURCE_ERROR, opToken.Line, opToken.Column);
 		return false;
@@ -45,16 +48,7 @@ bool Parser::SearchOperator(Token opToken, Operator& op, Operator::InputTaken in
 
 #pragma region Function
 
-ModeData Parser::FunctionCondition()
-{
-	Assert(Match(Token::SCOPE), "[");
-	Node* expr = Expression();
-	Assert(Match(Token::SCOPE), "]");
-
-	return Conditional(expr);
-}
-
-CompoundNode* Parser::FunctionArguments() 
+CompoundNode* Parser::ParseList(function<Node* ()> getItem)
 {
 	Assert(Match(Token::SCOPE), "[");
 
@@ -62,19 +56,43 @@ CompoundNode* Parser::FunctionArguments()
 
 	if (GetCurrent().Equals(Token::SCOPE, "]")) {
 		Match(Token::SCOPE);
-		return new CompoundNode();
+		return res;
 	}
 
-	res->AddNode(new LeafNode(Match(Token::IDENTIFIER)));
+	res->AddNode(getItem());
 
-	while (!GetCurrent().Equals(Token::SCOPE, "]")) {
-		Assert(Match(Token::OPERATOR), ",");
+	while (!GetCurrent().Equals(Token::SCOPE, "]") && error.IsOk()) {
+		Assert(Match(Token::COMMA), ",");
 
-		res->AddNode(new LeafNode(Match(Token::IDENTIFIER)));
+		res->AddNode(getItem());
 	}
 
 	Assert(Match(Token::SCOPE), "]");
 	return res;
+}
+
+// TODO: fix code repetition in CallArguments and FunctionArguments
+CompoundNode* Parser::CallArguments()
+{
+	return ParseList([this]() {
+		return Expression();
+	});
+}
+
+CompoundNode* Parser::FunctionArguments() 
+{
+	return ParseList([this]() {
+		return new LeafNode(Match(Token::IDENTIFIER));
+	});
+}
+
+ModeData Parser::FunctionCondition()
+{
+	Assert(Match(Token::SCOPE), "[");
+	Node* expr = Expression();
+	Assert(Match(Token::SCOPE), "]");
+
+	return Conditional(expr);
 }
 
 ModeData Parser::FunctionModifier()
@@ -180,6 +198,15 @@ Node* Parser::Function()
 	return new FunctionNode(id, mode, body, ret);
 }
 
+Node* Parser::LookForCall(Node* value)
+{
+	if (GetCurrent().Equals(Token::SCOPE, "[")) {
+		auto call = new FunctionCallNode(value, CallArguments());
+		return LookForCall(call);
+	}
+	return value;
+}
+
 #pragma endregion
 
 #pragma region Expression
@@ -190,33 +217,37 @@ Node* Parser::Primary()
 	Token curr = GetCurrent();
 
 	// Change IDENTIFIER matching logic to fit function calling
-	if (curr.GetType() == Token::Type::LITERAL || curr.GetType() == Token::Type::IDENTIFIER) {
+	if (curr.GetType() == Token::LITERAL) {
 		Match(curr.GetType());
 		return new LeafNode(curr);
 	}
+	else if (curr.GetType() == Token::IDENTIFIER) {
+		Node* id = new LeafNode(Match(Token::IDENTIFIER));
+		return LookForCall(id);
+	}
 
-	else if (Assert(Match(Token::Type::SCOPE), "(")) {
+	else if (Assert(Match(Token::SCOPE), "(")) {
 		Node* res = Expression();
 
-		Assert(Match(Token::Type::SCOPE), ")");
+		Assert(Match(Token::SCOPE), ")");
 		return res;
 	}
 
 	error.ReportAt("Unexpected token: " + curr.GetText() + " expected a value", 
 		ErrorPriority::SOURCE_ERROR, curr.Line, curr.Column);
-	return nullptr;
+	return new NullNode();
 }
 
 Node* Parser::UnaryExpression()
 {
 	Token curr = GetCurrent();
 
-	if (curr.GetType() == Token::Type::OPERATOR) {
-		Token opToken = Match(Token::Type::OPERATOR);
+	if (curr.GetType() == Token::OPERATOR) {
+		Token opToken = Match(Token::OPERATOR);
 
 		Operator op;
 		if (!SearchOperator(opToken, op, Operator::RIGHT)) {
-			return nullptr;
+			return new NullNode();
 		}
 
 		Node* next = UnaryExpression();
@@ -225,11 +256,11 @@ Node* Parser::UnaryExpression()
 	return Primary();
 }
 
-Node* Parser::Expression(int minPrecedence)
+Node* Parser::Expression(int maxPrecedence)
 {
 	Node* left = UnaryExpression();
 
-	while (GetCurrent().GetType() == Token::Type::OPERATOR) {
+	while (GetCurrent().GetType() == Token::OPERATOR) {
 
 		Token opToken = GetCurrent();
 
@@ -238,7 +269,7 @@ Node* Parser::Expression(int minPrecedence)
 		if (!SearchOperator(opToken, op, Operator::BOTH)) {
 			break;
 		}
-		else if (op.GetPrecedence() > minPrecedence) {
+		else if (op.GetPrecedence() > maxPrecedence) {
 			break;
 		}
 
@@ -278,7 +309,7 @@ CompoundNode* Parser::Statements(function<bool()> parseUntil)
 
 	auto t = GetCurrent();
 
-	while (parseUntil()) {
+	while (parseUntil() && error.IsOk()) {
 
 		statement = Statement();
 

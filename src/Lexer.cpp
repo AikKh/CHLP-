@@ -161,7 +161,9 @@ void Lexer::HandleWhitespace(const string& code, int& i) {
 
 Token Lexer::HandleOperator(const string& code, int& i) {
     if (IsScope(code[i]))
-        return MakeToken(Token::Type::SCOPE, string(1, code[i]));
+        return MakeToken(Token::SCOPE, string(1, code[i]));
+    else if (IsComma(code[i]))
+        return MakeToken(Token::COMMA, string(1, code[i]));
 
     // TODO: refactore
     if (code[i] == '.')

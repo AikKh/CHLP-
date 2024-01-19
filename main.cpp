@@ -24,7 +24,8 @@ int main()
 {
 
     // Opening
-    string filename = "tests/ParserTest2.dr";
+    string filename = "tests/ParserTest3.dr";
+    //string filename = "tests/ParserTest2.dr";
     //string filename = "tests/lexerTest.dr";
     string content = readFileIntoString(filename);
 
@@ -33,6 +34,7 @@ int main()
     vector<Token> tokens;
 
     cout << content << endl;
+    cout << string(100, '-') << endl;
 
     lexer.LexCode(content, tokens);
 

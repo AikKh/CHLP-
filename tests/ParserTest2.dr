@@ -1,21 +1,31 @@
+# Simple assignment expressions
 c = 6;
+
 a = (5 + 2) - 5 * 4;
+
+asd = das == 3 or s;
+
+# Functions
 
 [immidiate!]
 {
     a = 2 + 3 * 4;
-}
+}()
 
 [some_if_statement?][c == 6 or a == 5]
-(
-    a
-)
+(a)
 
-[sum][a, b, c]{
+[sum][]{
     s = a + b + c;
 }(s)
 
+[s]{
 
+    [a]{}
+}(a)
 
+# Function call
+some_if_statement[];
 
-
+# Multiple calls after each other
+sum[3, a][4][5][];

@@ -11,7 +11,8 @@ public:
 		IDENTIFIER,
 		OPERATOR,
 		KEYWORD,
-		SCOPE, // Is also operator basically
+		SCOPE, 
+		COMMA,
 		LINE_END,
 		END_OF_FILE,
 		UNKNOWN,
@@ -67,6 +68,8 @@ private:
 			return "KEYWORD";
 		case Token::SCOPE:
 			return "SCOPE";
+		case Token::COMMA:
+			return "COMMA";
 		case Token::LINE_END:
 			return "LINE_END";
 		case Token::END_OF_FILE:
