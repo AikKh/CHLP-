@@ -2,32 +2,44 @@
 
 #include "LeafNode.h"
 
-class BinaryNode : public LeafNode {
-public:
-	// friend struct Token;
+namespace Doer {
 
-	BinaryNode(Token value, Node* left = nullptr, Node* right = nullptr) : LeafNode(value), _left(left), _right(right) {}
+	class BinaryNode : public LeafNode {
+	public:
+		// friend struct Token;
 
-	~BinaryNode() {
-		if (_left != nullptr) {
+		BinaryNode(Token value, Node* left = nullptr, Node* right = nullptr) : LeafNode(move(value)), _left(left), _right(right) {}
+
+		~BinaryNode() override {
 			delete _left;
-		}
-
-		if (_right != nullptr) {
 			delete _right;
 		}
-	}
 
-	void Print(int level = 0) const override {
-		LeafNode::Print(level);
-		if (_left)
-			_left->Print(level + Indedention);
-		if (_right)
-			_right->Print(level + Indedention);
-	}
+		const Token& GetValue() const {
+			return LeafNode::GetValue();
+		}
 
-private:
+		const Node* GetLeft() const {
+			return _left;
+		}
 
-	Node* _left;
-	Node* _right;
-};
+		const Node* GetRight() const {
+			return _right;
+		}
+
+		void Print(int level = 0) const override {
+			LeafNode::Print(level);
+			if (_left)
+				_left->Print(level + Indedention);
+			if (_right)
+				_right->Print(level + Indedention);
+		}
+
+		ActionNode* Accept(Visitor& runner) const override;
+
+	private:
+
+		Node* _left;
+		Node* _right;
+	};
+}

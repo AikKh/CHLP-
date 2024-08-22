@@ -1,13 +1,23 @@
 #pragma once
 
-#include "Token.h"
+#include "../h/ActionNode.h"
 #include "ErrorHandler.h"
 
-class Node {
-public:
-	virtual void Print(int level = 0) const = 0;
+namespace Doer {
 
-protected:
-	// For printing
-	static const int Indedention = 3;
-};
+	class Value;
+	class Visitor;
+
+	class Node {
+	public:
+		virtual ActionNode* Accept(Visitor& runner) const = 0;
+
+		virtual void Print(int level = 0) const = 0;
+
+		virtual ~Node() = default;
+
+	protected:
+		// For printing
+		static const int Indedention = 3;
+	};
+}

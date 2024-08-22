@@ -44,8 +44,8 @@ function_condition      ::= "[" expr "]"
 function_args           ::= "["[id {"," id}]"]"
 
 
-function_body           ::= "{" [statements] "}" function_return_p | function_return 
-function_body_prime     ::= function_return | ε
+function_body           ::= "{" [statements] "}" [function_return] | function_return 
+//function_body_prime     ::= function_return | ε
 
 function_return         ::= "(" [statement] ")"
 // function_return      ::= "(" (expr | "this") ")"

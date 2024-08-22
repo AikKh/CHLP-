@@ -2,36 +2,39 @@
 
 #include "Node.h"
 
-enum Mode {
-	IMMEDIATE,
-	CONDITIONAL,
-	REGULAR
-};
+namespace Doer {
 
-class ModeData {
-public:
-	ModeData() = default;
+	enum Mode {
+		IMMEDIATE,
+		CONDITIONAL,
+		REGULAR
+	};
 
-	bool HasValue() const {
-		return _hasValue;
-	}
+	class ModeData {
+	public:
+		ModeData() = default;
 
-	virtual Node* GetValue() const {
-		return _value;
-	}
+		bool HasValue() const {
+			return _hasValue;
+		}
 
-	Mode GetMode() const {
-		return _mode;
-	}
+		virtual Node* GetValue() const {
+			return _value;
+		}
 
-protected:
+		Mode GetMode() const {
+			return _mode;
+		}
 
-	ModeData(Mode mode, Node* value = nullptr) : _hasValue(value != nullptr), _mode(mode), _value(value) {}
+	protected:
 
-	Mode _mode;
+		ModeData(Mode mode, Node* value = nullptr) : _hasValue(value != nullptr), _mode(mode), _value(value) {}
 
-private:
+		Mode _mode;
 
-	bool _hasValue;
-	Node* _value;
-};
+	private:
+
+		bool _hasValue;
+		Node* _value;
+	};
+}

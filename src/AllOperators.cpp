@@ -1,3 +1,5 @@
 #include "../h/AllOperators.h"
 
-AllOperators operators;
+namespace Doer {
+	AllOperators operators;
+}

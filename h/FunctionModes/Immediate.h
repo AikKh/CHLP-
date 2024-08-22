@@ -2,12 +2,15 @@
 
 #include "../Mode.h"
 
-class Immediate : public ModeData {
-public:
+namespace Doer {
 
-	Immediate() : ModeData(Mode::IMMEDIATE) {}
+	class Immediate : public ModeData {
+	public:
 
-	Node* GetValue() const override{
-		throw std::logic_error("Immediate mode can't have a value!");
-	}
-};
+		Immediate() : ModeData(Mode::IMMEDIATE) {}
+
+		Node* GetValue() const override {
+			throw std::logic_error("Immediate mode can't have a value!");
+		}
+	};
+}

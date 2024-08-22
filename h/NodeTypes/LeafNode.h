@@ -2,17 +2,28 @@
 
 #include "../Node.h"
 
-class LeafNode : public Node {
+namespace Doer {
 
-public:
-	LeafNode(Token value) : _value(value) {}
+	class HasValue {
+	public:
+		virtual const Token& GetValue() const = 0;
+	};
 
-	~LeafNode() = default;
+	class LeafNode : public Node, public HasValue {
+	public:
+		LeafNode(Token value) : _value{ move(value) } {}
 
-	void Print(int level = 0) const override {
-		cout << string(level, ' ') << _value.GetText() << endl;
-	}
+		~LeafNode() override = default;
 
-private:
-	Token _value;
-};
+		const Token& GetValue() const { return _value; }
+
+		ActionNode* Accept(Visitor& runner) const override;
+
+		void Print(int level = 0) const override {
+			cout << string(level, ' ') << _value.GetText() << endl;
+		}
+
+	private:
+		Token _value;
+	};
+}

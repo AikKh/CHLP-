@@ -1,3 +1,6 @@
+# Defining and assigning variables
+a = 5;
+
 # Entry in this case is function id
 [entry]
 {

@@ -1,0 +1,21 @@
+program         ::= statement { ";" statement }
+statement       ::= assignment | expr | custom_function | function_call | while_loop | comment
+assignment      ::= id "=" expr
+expr            ::= conditional_expr { "," conditional_expr }
+conditional_expr ::= logical_or_expr ["?" expr ":" conditional_expr]
+logical_or_expr  ::= logical_and_expr { "||" logical_and_expr }
+logical_and_expr ::= bitwise_or_expr { "&&" bitwise_or_expr }
+bitwise_or_expr  ::= bitwise_xor_expr { "|" bitwise_xor_expr }
+bitwise_xor_expr ::= bitwise_and_expr { "^" bitwise_and_expr }
+bitwise_and_expr ::= equality_expr { "&" equality_expr }
+equality_expr   ::= relational_expr { ("==" | "!=") relational_expr }
+relational_expr ::= shift_expr { ("<" | "<=" | ">" | ">=") shift_expr }
+shift_expr      ::= additive_expr { ("<<" | ">>") additive_expr }
+additive_expr   ::= multiplicative_expr { ("+" | "-") multiplicative_expr }
+multiplicative_expr ::= unary_expr { ("*" | "/" | "%") unary_expr }
+unary_expr      ::= postfix_expr | "sizeof" unary_expr | "~" unary_expr | "!" unary_expr | "+" unary_expr | "-" unary_expr
+postfix_expr    ::= primary_expr { "++" | "--" | "->" id | "." id | "[this]" | "." "typeid" | "." "dynamic_cast" | "." "static_cast" | "." "const_cast" | "." "reinterpret_cast" | "[" expr "]" | "->" "*" | "->" id "(" [expr { "," expr }] ")" | "->" id "[" expr "]" | "." "new" | "." "new" "[" expr "]" | "." "delete" | "." "delete" "[" expr "]" | "->" id "->*" id | "->" id ".*" id }
+primary_expr    ::= "(" expr ")" | id | number | bool_expr | custom_function | function_call
+function_call   ::= id "[" expr { "," expr } "]"
+while_loop      ::= "[" "?" "]" bool_expr "{" statements "}(" function_call "[this])"
+comment         ::= "#" {any_character_except_newline} newline

@@ -2,71 +2,74 @@
 
 #include "Node.h"
 #include "AllOperators.h"
-#include "../h/NodeTypes/BinaryNode.h"
-#include "../h/NodeTypes/CompoundNode.h"
-#include "../h/NodeTypes/UnaryNode.h"
-#include "../h/NodeTypes/FunctionNode.h"
-#include "../h/NodeTypes/NullNode.h"
-#include "../h/NodeTypes/FunctionCallNode.h"
+
+#include "NodeTypes/BinaryNode.h"
+#include "NodeTypes/CompoundNode.h"
+#include "NodeTypes/UnaryNode.h"
+#include "NodeTypes/FunctionNode.h"
+#include "NodeTypes/NullNode.h"
+#include "NodeTypes/FunctionCallNode.h"
 
 #include "FunctionModes/Immediate.h"
 #include "FunctionModes/Conditional.h"
 #include "FunctionModes/Regular.h"
 
-class Parser {
-public:
-	Parser(vector<Token>& tokens);
+namespace Doer {
 
-	bool Done() {
-		return _currTokenIndex >= _tokens.size() - 1;
-	}
+	class Parser {
+	public:
+		Parser(vector<Token>& tokens);
 
-	Node* Parse();
+		bool Done() {
+			return _currTokenIndex >= _tokens.size() - 1;
+		}
 
-private:
-	CompoundNode* ParseList(function<Node* ()>);
+		CompoundNode* Parse();
 
-	CompoundNode* CallArguments();
+	private:
+		CompoundNode* ParseList(function<Node* ()>);
 
-	CompoundNode* FunctionArguments();
+		CompoundNode* CallArguments();
 
-	ModeData FunctionCondition();
+		CompoundNode* FunctionArguments();
 
-	ModeData FunctionModifier();
+		ModeData FunctionCondition();
 
-	string FunctionHeader(ModeData& mode);
+		ModeData FunctionModifier();
 
-	Node* FunctionBody();
+		string FunctionHeader(ModeData& mode);
 
-	Node* FunctionReturn();
+		Node* FunctionBody();
 
-	Node* Function();
+		Node* FunctionReturn();
 
-	Node* LookForCall(Node*);
+		Node* Function();
 
-	Node* Primary();
+		Node* LookForCall(Node*);
 
-	Node* UnaryExpression();
+		Node* Primary();
 
-	Node* Expression(int maxPrecedence = INT_MAX);
+		Node* UnaryExpression();
 
-	Node* Statement();
+		Node* Expression(int maxPrecedence = INT_MAX);
 
-	CompoundNode* Statements(function<bool()>);
+		Node* Statement();
 
-private:
-	int _currTokenIndex = 0;
+		CompoundNode* Statements(function<bool()>);
 
-	vector<Token>& _tokens;
+	private:
+		int _currTokenIndex = 0;
 
-	const Token GetCurrent();
+		vector<Token>& _tokens;
 
-	Token Match(Token::Type expectedType);
+		const Token GetCurrent();
 
-	bool Assert(Token token, string text) const;
+		Token Match(Token::Type expectedType);
 
-	static bool SearchOperator(Token opToken, Operator& op, Operator::InputTaken input);
-};
+		bool Assert(Token token, string text) const;
 
+		static bool SearchOperator(Token opToken, Operator& op, Operator::InputTaken input);
+	};
+}
 
 

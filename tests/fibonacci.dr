@@ -1,0 +1,16 @@
+# Incorrect
+
+# Fibonacci number calculator
+[fib][n]
+{
+    # Base cases
+    [?][n == 0](0)
+
+    [?][n == 1](1)
+
+    # Recursive case
+    [?][n > 1](fib[n - 1] + fib[n - 2])
+}
+
+# Test the Fibonacci function
+result = fib[10];

@@ -1,93 +1,96 @@
 #pragma once
 
 #include "ErrorHandler.h"
-#include "../h/AllOperators.h"
+#include "AllOperators.h"
 
-class Lexer {
-public:
-	enum Type
-	{
-		WHITESPACE,
-		DIGIT,
-		LETTER,
-		OPERATOR,
-		LINE_BREAK,
-		NEW_LINE,
-		END_OF_FILE,
-		COMMENT,
-		UNKNOWN,
-	};
+namespace Doer {
 
-	void LexCode(const string&, vector<Token>&);
+	class Lexer {
+	public:
+		enum Type
+		{
+			WHITESPACE,
+			DIGIT,
+			LETTER,
+			OPERATOR,
+			LINE_BREAK,
+			NEW_LINE,
+			END_OF_FILE,
+			COMMENT,
+			UNKNOWN,
+		};
 
-private:
-	int _currLine = 0;
-	int _currColumn = 0;
+		void LexCode(const string&, vector<Token>&);
 
-	bool _hasSetUp = false;
-	unordered_map<char, Type> charToType;
+	private:
+		int _currLine = 0;
+		int _currColumn = 0;
 
-	void SetUp();
+		bool _hasSetUp = false;
+		unordered_map<char, Type> charToType;
 
-	Type GetType(char);
+		void SetUp();
 
-	// Handlers
+		Type GetType(char);
 
-	Token HandleLetter(const string& code, int& i);
+		// Handlers
 
-	void HandleWhitespace(const string& code, int& i);
+		Token HandleLetter(const string& code, int& i);
 
-	Token HandleOperator(const string& code, int& i);
+		void HandleWhitespace(const string& code, int& i);
 
-	Token HandleDigit(const string& code, int& i);
+		Token HandleOperator(const string& code, int& i);
 
-	// Helper functions
+		Token HandleDigit(const string& code, int& i);
 
-	int GoForwardWhile(const string& code, int& i, function<bool(Type)> condition) {
-		/// <summary>
-		/// Goes forward while some condition and return the begining
-		/// </summary>
+		// Helper functions
 
-		int start = i;
+		int GoForwardWhile(const string& code, int& i, function<bool(Type)> condition) {
+			/// <summary>
+			/// Goes forward while some condition and return the begining
+			/// </summary>
 
-		Type nextType;
+			int start = i;
 
-		do {
-			nextType = GetType(code[++i]);
-		} while (condition(nextType) && i < code.size());
+			Type nextType;
 
-		i--;
-		return start;
-	}
+			do {
+				nextType = GetType(code[++i]);
+			} while (condition(nextType) && i < code.size());
 
-	Token MakeToken(Token::Type type, string str) {
-		return Token(type, str, _currLine, _currColumn);
-	}
-
-	bool CheckFloatingPoint(char c, bool& hasPoint) {
-		// Can't repeat twice
-
-		if (c == '.') {
-			if (!hasPoint)
-				return hasPoint = true;
-			error.ReportAt("Invalid floating point", SOURCE_ERROR, _currLine, _currColumn);
+			i--;
+			return start;
 		}
-		return false;
-	}
 
-	inline void ShiftColumn(int start, int end) {
-		_currColumn += (end - start + 1);
-	}
+		Token MakeToken(Token::Type type, string str) {
+			return Token(type, str, _currLine, _currColumn);
+		}
 
-	static bool IsScope(char c) {
-		return c == '[' || c == '{' || c == '(' || c == ']' || c == '}' || c == ')';
-	}
+		bool CheckFloatingPoint(char c, bool& hasPoint) const {
+			// Can't repeat twice
 
-	static bool IsComma(char c) {
-		return c == ',';
-	}
+			if (c == '.') {
+				if (!hasPoint)
+					return hasPoint = true;
+				error.ReportAt("Invalid floating point", SOURCE_ERROR, _currLine, _currColumn);
+			}
+			return false;
+		}
 
-	static string GetSub(const string& code, int start, int end) {
-		return code.substr(start, end - start);
-	}
-};
+		inline void ShiftColumn(int start, int end) {
+			_currColumn += (end - start + 1);
+		}
+
+		static bool IsScope(char c) {
+			return c == '[' || c == '{' || c == '(' || c == ']' || c == '}' || c == ')';
+		}
+
+		static bool IsComma(char c) {
+			return c == ',';
+		}
+
+		static string GetSub(const string& code, int start, int end) {
+			return code.substr(start, end - start);
+		}
+	};
+}

@@ -2,11 +2,16 @@
 
 #include "../Node.h"
 
-class NullNode : public Node {
-public:
-	~NullNode() = default;
+namespace Doer {
 
-	void Print(int level = 0) const override {
-		cout << string(level, ' ') << "NULL" << endl;
-	}
-};
+	class NullNode : public Node {
+	public:
+		~NullNode() override = default;
+
+		ActionNode* Accept(Visitor& runner) const override;
+
+		void Print(int level = 0) const override {
+			cout << string(level, ' ') << "NULL Node" << endl;
+		}
+	};
+}

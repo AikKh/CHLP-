@@ -1,27 +1,30 @@
 #include "../h/ErrorHandler.h"
 
-ErrorHandler error;
+namespace Doer {
 
-void ErrorHandler::Report(string message, ErrorPriority priority, Token* token)
-{
-	string error = GetErrorMessage(message, priority);
+	ErrorHandler error;
 
-	if (token) {
-		error += " " + token->ToString();
+	void ErrorHandler::Report(string message, ErrorPriority priority, const Token* token)
+	{
+		string error = GetErrorMessage(message, priority);
+
+		if (token) {
+			error += " " + token->ToString();
+		}
+		AddError(error);
 	}
-	AddError(error);
-}
 
-void ErrorHandler::ReportAt(string message, ErrorPriority priority, int line, int column)
-{
-	string error = GetErrorMessage(message, priority);
-	error += " at " + std::to_string(line) + ':' + std::to_string(column);
-	AddError(error);
-}
+	void ErrorHandler::ReportAt(string message, ErrorPriority priority, int line, int column)
+	{
+		string error = GetErrorMessage(message, priority);
+		error += " at " + std::to_string(line) + ':' + std::to_string(column);
+		AddError(error);
+	}
 
-void ErrorHandler::PrintErrors()
-{
-	for (auto err : _errors) {
-		cout << err << endl;
+	void ErrorHandler::PrintErrors()
+	{
+		for (auto& err : _errors) {
+			cout << err << endl;
+		}
 	}
 }

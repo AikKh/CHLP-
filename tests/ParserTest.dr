@@ -1,70 +1,70 @@
 # Expression 1
-a = 1 or 2 and 3 == 4 < 5 + 6 * 7
+a = 1 or 2 and 3 == 4 < 5 + 6 * 7;
 
 # Expression 2
-b = 7 * 6 + 5 < 4 == 3 and 2 or 1
+b = 7 * 6 + 5 < 4 == 3 and 2 or 1;
 
 # Expression 3
-c = 1 * 2 - 3 < 4
+c = 1 * 2 - 3 < 4;
 
 # Expression 4
-d = 10 > 5 and (3 + 2) * 4 != 18
+d = 10 > 5 and (3 + 2) * 4 != 18;
 
 # Expression 5
-e = (6 + 7) * 2 == 20 or 15 >= 10 and 3 < 2
+e = (6 + 7) * 2 == 20 or 15 >= 10 and 3 < 2;
 
 # Expression 6
-f = not (8 + 2) == 5 and 6 or 1
+f = not (8 + 2) == 5 and 6 or 1;
 
 # Expression 7
-g = 9 + 2 * 3 != 5 or 4 < 6 and 8
+g = 9 + 2 * 3 != 5 or 4 < 6 and 8;
 
 # Expression 8
-h = (10 + 2) / 2 >= 6 and 3 < 9 or 1
+h = (10 + 2) / 2 >= 6 and 3 < 9 or 1;
 
 # Expression 9
-i = 5 * 4 + 7 == 20 and not (3 + 2) or 1
+i = 5 * 4 + 7 == 20 and not (3 + 2) or 1;
 
 # Expression 10
-j = 7 > 5 and (8 - 3) * 2 <= 10 or 1
+j = 7 > 5 and (8 - 3) * 2 <= 10 or 1;
 
 # Expression 11
-k = not (2 + 3) == 5 and 6 or 1
+k = not (2 + 3) == 5 and 6 or 1;
 
 # Expression 12
-l = 4 * 5 + 3 == 23 or 15 >= 10 and 3 < 2
+l = 4 * 5 + 3 == 23 or 15 >= 10 and 3 < 2;
 
 # Expression 13
-m = 8 + 2 * 3 != 5 and 4 < 6 or 8
+m = 8 + 2 * 3 != 5 and 4 < 6 or 8;
 
 # Expression 14
-n = (5 + 2) / 2 >= 6 or 3 < 9 and 1
+n = (5 + 2) / 2 >= 6 or 3 < 9 and 1;
 
 # Expression 15
-o = 6 * 4 + 7 == 20 and not (3 + 2) or 1
+o = 6 * 4 + 7 == 20 and not (3 + 2) or 1;
 
 # Expression 16
-p = 7 > 5 and (8 - 3) * 2 <= 10 and 1
+p = 7 > 5 and (8 - 3) * 2 <= 10 and 1;
 
 # Expression 17
-q = not (2 + 3) == 5 or 6 and 1
+q = not (2 + 3) == 5 or 6 and 1;
 
 # Expression 18
-r = 4 * 5 + 3 == 23 and 15 >= 10 or 3 < 2
+r = 4 * 5 + 3 == 23 and 15 >= 10 or 3 < 2;
 
 # Expression 19
-s = 8 + 2 * 3 != 5 or 4 < 6 and 8
+s = 8 + 2 * 3 != 5 or 4 < 6 and 8;
 
 # Expression 20
-t = (5 + 2) / 2 >= 6 and 3 > 9 or +1
+t = (5 + 2) / 2 >= 6 and 3 > 9 or +1;
 
 # Expression 20
-t = 1 + 2 + 3 + not 4
+t = 1 + 2 + 3 + not 4;
 
-a = b + c + d + 0
+a = b + c + d + 0;
 
-a = b = c = d
+a = b = c = d;
 
-v = 6 ^ 5 ^ +3
+v = 6 ^ 5 ^ + 3 ;
 
-a = (1 + 2) * 3
+a = (1 + 2) * 3;

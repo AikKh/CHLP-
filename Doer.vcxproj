@@ -76,6 +76,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -90,6 +91,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -104,6 +106,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -118,6 +121,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -127,35 +131,70 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\ObjectManager.cpp" />
+    <ClCompile Include="src\NodeTypes\CompoundNode.cpp" />
+    <ClCompile Include="src\NodeTypes\FunctionCallNode.cpp" />
+    <ClCompile Include="src\NodeTypes\FunctionNode.cpp" />
+    <ClCompile Include="src\NodeTypes\LeafNode.cpp" />
+    <ClCompile Include="src\NodeTypes\NullNode.cpp" />
+    <ClCompile Include="src\NodeTypes\UnaryNode.cpp" />
+    <ClCompile Include="src\NodeTypes\BinaryNode.cpp" />
     <ClCompile Include="h\NodeTypes\BinaryNode.h" />
     <ClCompile Include="src\AllOperators.cpp" />
     <ClCompile Include="src\Parser.cpp" />
     <ClCompile Include="src\ErrorHandler.cpp" />
     <ClCompile Include="src\Lexer.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="src\Keywords.cpp" />
     <ClCompile Include="src\Token.cpp" />
+    <ClCompile Include="src\Type.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="h\ActionNode.h" />
+    <ClInclude Include="h\ActionNodes\AccessAction.h" />
+    <ClInclude Include="h\ActionNodes\NoAction.h" />
+    <ClInclude Include="h\ActionNodes\AssignAction.h" />
+    <ClInclude Include="h\ActionNodes\ListAction.h" />
+    <ClInclude Include="h\ActionNodes\LiteralAction.h" />
+    <ClInclude Include="h\ActionNodes\OperationAction.h" />
     <ClInclude Include="h\AllOperators.h" />
     <ClInclude Include="h\ErrorHandler.h" />
-    <ClInclude Include="h\includes.h" />
+    <ClInclude Include="h\FunctionModes\Conditional.h" />
+    <ClInclude Include="h\FunctionModes\Immediate.h" />
+    <ClInclude Include="h\FunctionModes\Regular.h" />
+    <ClInclude Include="h\Includes.h" />
+    <ClInclude Include="h\Interpretation\ObjectManager.h" />
+    <ClInclude Include="h\Interpretation\Validator.h" />
+    <ClInclude Include="h\MemoryManagement\Object.h" />
+    <ClInclude Include="h\Interpretation\Visitor.h" />
     <ClInclude Include="h\Lexer.h" />
-    <ClInclude Include="h\Keywords.h" />
+    <ClInclude Include="h\Interpretation\ActionTreeGenerator.h" />
+    <ClInclude Include="h\MemoryManagement\StackFrame.h" />
+    <ClInclude Include="h\Mode.h" />
     <ClInclude Include="h\Node.h" />
-    <ClInclude Include="h\NodeTypes\ListNode.h" />
+    <ClInclude Include="h\NodeTypes\FunctionCallNode.h" />
+    <ClInclude Include="h\NodeTypes\FunctionNode.h" />
+    <ClInclude Include="h\NodeTypes\CompoundNode.h" />
+    <ClInclude Include="h\NodeTypes\LeafNode.h" />
+    <ClInclude Include="h\NodeTypes\NullNode.h" />
     <ClInclude Include="h\NodeTypes\UnaryNode.h" />
     <ClInclude Include="h\Operator.h" />
     <ClInclude Include="h\Parser.h" />
     <ClInclude Include="h\Token.h" />
+    <ClInclude Include="h\MemoryManagement\Type.h" />
+    <ClInclude Include="h\Environment.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="pythonTests\ASTParser.py" />
     <None Include="pythonTests\SimpleParser.py" />
     <None Include="SyntaxDesign\ParserTable" />
+    <None Include="tests\fibonacci.dr" />
     <None Include="tests\lexerTest.dr" />
     <None Include="tests\ParserTest.dr" />
+    <None Include="tests\ParserTest2.dr" />
+    <None Include="tests\ParserTest3.dr" />
+    <None Include="tests\ParserTest4.dr" />
     <None Include="tests\scope.dr" />
+    <None Include="tests\semantic_test1.dr" />
     <None Include="tests\test.dr" />
   </ItemGroup>
   <ItemGroup>
