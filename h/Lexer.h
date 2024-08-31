@@ -28,6 +28,7 @@ namespace Doer {
 
 		bool _hasSetUp = false;
 		unordered_map<char, Type> charToType;
+		unordered_set<string> keywords;
 
 		void SetUp();
 
@@ -79,6 +80,14 @@ namespace Doer {
 
 		inline void ShiftColumn(int start, int end) {
 			_currColumn += (end - start + 1);
+		}
+
+		inline bool IsKeyword(const string& str) {
+			return keywords.find(str) != keywords.end();
+		}
+
+		inline bool IsBoolean(const string& str) {
+			return str == "true" || str == "false";
 		}
 
 		static bool IsScope(char c) {

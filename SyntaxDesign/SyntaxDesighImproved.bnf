@@ -1,0 +1,55 @@
+program            ::= statements END_OF_FILE
+
+statements         ::= (expr | function) { statements }
+
+statement          ::= expr ";"
+
+// Expressions
+expr               ::= logic_or_expr { "=" expr }
+
+logic_or_expr      ::= logic_and_expr { "or" logic_and_expr }
+logic_and_expr     ::= equality_expr { "and" equality_expr }
+
+equality_expr      ::= comparison_expr { ("==" | "!=") comparison_expr }
+comparison_expr    ::= add_expr { ("<" | ">" | "<=" | ">=") add_expr }
+
+add_expr           ::= mult_expr { ("+" | "-") mult_expr }
+mult_expr          ::= unary_expr { ("*" | "/") unary_expr }
+
+unary_expr         ::= primary_expr | "not" unary_expr | "+" unary_expr | "-" unary_expr
+
+primary_expr       ::= "(" expr ")" | number | function_call
+
+// Vars, litterals and comments
+ 
+number             ::= digit { digit }
+id                 ::= letter { letter | digit }
+
+digit              ::= "0".."9"
+letter             ::= "a".."z" | "A".."Z"
+
+comment            ::= "#" {any_character_except_newline} newline
+
+// Function
+
+function                ::= function_header function_body
+
+function_header         ::= "[" [id] (function_modifier | "]" [function_args]) 
+
+function_modifier       ::= "!" "]" | "?" "]" function_condition 
+
+
+
+function_condition      ::= "[" expr "]"
+function_args           ::= "["[id {"," id}]"]"
+
+
+function_body           ::= "{" [statements] "}" [function_return] | function_return 
+//function_body_prime   ::= function_return | ?
+
+function_return         ::= "(" [statement] ")"
+// function_return      ::= "(" (expr | "this") ")"
+
+
+function_call           ::= id { call_args }
+call_args               ::= "(" [expr { "," expr }] ")"

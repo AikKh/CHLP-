@@ -4,20 +4,22 @@
 
 namespace Doer {
 
-	class ListAction : public ActionNode {
+	class CompoundAction : public ActionNode {
 	public:
 		// TODO: change logic: return value 
-		Object Execute() const override { 
+		shared_ptr<Object> Execute() const override {
 			for (const auto& action : actions) {
 				action->Execute();
 
 				if (!error.IsOk()) {
-					return Object::None();
+					return nullptr;
 				}
 			}
 
-			return Object::None();
+			return nullptr;
 		}
+
+		Object::ObjectPtr ExecuteWithReturn(StackFrame*& stack) const;
 
 		void AddAction(unique_ptr<ActionNode> action) {
 			actions.push_back(move(action));

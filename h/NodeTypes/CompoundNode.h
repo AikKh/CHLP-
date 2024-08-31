@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Node.h"
+#include "LeafNode.h"
 
 namespace Doer {
 
@@ -25,7 +26,7 @@ namespace Doer {
 			nodes.push_back(node);
 		}
 
-		ActionNode* Accept(Visitor& runner) const override;
+		ActionNode* Accept(ActionTreeGenerator&) const override;
 
 	private:
 		vector<Node*> nodes;

@@ -24,6 +24,9 @@ using std::vector;
 #include <set>
 using std::set;
 
+#include <unordered_set>
+using std::unordered_set;
+
 #include <memory>
 using std::unique_ptr;
 using std::shared_ptr;

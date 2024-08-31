@@ -1,7 +1,6 @@
 #include "../../h/NodeTypes/NullNode.h"
-#include "../../h/Interpretation/Visitor.h"
 
-Doer::ActionNode* Doer::NullNode::Accept(Visitor& visitor) const
+Doer::ActionNode* Doer::NullNode::Accept(ActionTreeGenerator& visitor) const
 {
 	return visitor.Visit(this);
 }

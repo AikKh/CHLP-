@@ -1,7 +1,6 @@
 #include "../../h/NodeTypes/UnaryNode.h"
-#include "../../h/Interpretation/Visitor.h"
 
-Doer::ActionNode* Doer::UnaryNode::Accept(Visitor& visitor) const
+Doer::ActionNode* Doer::UnaryNode::Accept(ActionTreeGenerator& visitor) const
 {
 	return visitor.Visit(this);
 }

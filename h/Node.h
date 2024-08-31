@@ -1,16 +1,13 @@
 #pragma once
 
-#include "../h/ActionNode.h"
+#include "../h/Interpretation/ActionTreeGenerator.h"
 #include "ErrorHandler.h"
 
 namespace Doer {
 
-	class Value;
-	class Visitor;
-
 	class Node {
 	public:
-		virtual ActionNode* Accept(Visitor& runner) const = 0;
+		virtual ActionNode* Accept(ActionTreeGenerator& runner) const = 0;
 
 		virtual void Print(int level = 0) const = 0;
 

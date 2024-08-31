@@ -59,6 +59,15 @@ namespace Doer {
         _hasSetUp = true;
         _currLine = 1;
         _currColumn = 0;
+
+        keywords.insert("if");
+        keywords.insert("elif");
+        keywords.insert("else");
+
+        keywords.insert("for");
+        keywords.insert("in");
+
+        keywords.insert("return");
     }
 
     Doer::Lexer::Type Doer::Lexer::GetType(char c)
@@ -150,6 +159,13 @@ namespace Doer {
         if (!hasDigit && operators.IsOperator(text)) {
             /// Check for operators
             type = Token::Type::OPERATOR;
+        }
+        else if (!hasDigit && IsKeyword(text)) {
+            type = Token::Type::KEYWORD;
+        }
+        else if (!hasDigit && IsBoolean(text))
+        {
+            type = Token::Type::BOOLEAN;
         }
 
         return MakeToken(type, text);

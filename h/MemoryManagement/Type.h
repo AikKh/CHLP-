@@ -2,63 +2,116 @@
 
 #include "../Includes.h"
 
+#define STR(value) #value
+
 namespace Doer {
 
-	enum class TypeId {
-		INT, FLOAT, VOID
+	enum class Type {
+		INT, 
+		FLOAT,
+		BOOL,
+		FUNCTION,
+		NONE
 	};
 
-	// TODO: Simplify this piece of shit
-	class Type {
-	public:
-		inline TypeId GetID() const { return _id; }
-		inline size_t GetSize() const { return _size; }
+	enum class MethodType {
+		// Operations
+		ADD,
+		SUB,
+		MUL,
+		DIV,
+		MOD,
 
-		Type() = delete;
+		// Comparison
+		LESS_THEN,
+		LESS_EQUAL,
+		EQUAL,
+		NOT_EQUAL,
+		GREATER_EQUAL,
+		GREATER_THEN,
 
-		string ToString() const {
-			switch (_id)
-			{
-			case Doer::TypeId::INT:
-				return "Int";
-			case Doer::TypeId::FLOAT:
-				return "Float";
-			case Doer::TypeId::VOID:
-				return "Void";
-			default:
-				throw std::logic_error("Not implemented type id for to string");
-			}
-		}
+		OR,
+		AND,
 
-		bool operator==(const Type& other) const
-		{
-			return _id == other._id;
-		}
+		// Casts
+		INT, 
+		FLOAT,
+		BOOL,
 
-		bool operator!=(const Type& other) const
-		{
-			return _id != other._id;
-		}
+		CALL,
+		SIZE,
+		NEW,
 
-		static Type Get(TypeId id) {
-			switch (id)
-			{
-			case Doer::TypeId::INT:   return Int;
-			case Doer::TypeId::FLOAT: return Float;
-			case Doer::TypeId::VOID:  return Void;
-			default: throw std::runtime_error("Unknown type id");
-			}
-		}
-
-	private:
-		Type(TypeId id, size_t size) : _id(id), _size(size) { }
-
-	private:
-		TypeId _id;
-		size_t _size;
-
-		static const Type Int;
-		static const Type Float;
-		static const Type Void;
+		REPR
 	};
+
+	inline string TypeToString(Type type)
+	{
+		switch (type)
+		{
+		case Doer::Type::INT:
+			return "Integer";
+		case Doer::Type::FLOAT:
+			return "Float";
+		case Doer::Type::BOOL:
+			return "Bool";
+		case Doer::Type::FUNCTION:
+			return "Function";
+		case Doer::Type::NONE:
+			return "None";
+		default:
+			throw std::logic_error("Got unknown type while converting type to string");
+		}
+	}
+
+	inline string TypeToString(MethodType type)
+	{
+		switch (type)
+		{
+		case Doer::MethodType::ADD:
+			return "+";
+		case Doer::MethodType::SUB:
+			return "-";
+		case Doer::MethodType::MUL:
+			return "*";
+		case Doer::MethodType::DIV:
+			return "/";
+		case Doer::MethodType::MOD:
+			return "%";
+
+		case Doer::MethodType::INT:
+			return "int cast";
+		case Doer::MethodType::FLOAT:
+			return "float cast";
+		case Doer::MethodType::BOOL:
+			return "bool cast";
+
+		case Doer::MethodType::GREATER_EQUAL:
+			return ">=";
+		case Doer::MethodType::GREATER_THEN:
+			return ">";
+		case Doer::MethodType::LESS_EQUAL:
+			return "<=";
+		case Doer::MethodType::LESS_THEN:
+			return "<";
+		case Doer::MethodType::EQUAL:
+			return "==";
+		case Doer::MethodType::NOT_EQUAL:
+			return "!=";
+
+		case Doer::MethodType::OR:
+			return "or";
+		case Doer::MethodType::AND:
+			return "and";
+
+		case Doer::MethodType::CALL:
+			return "call";
+		case Doer::MethodType::SIZE:
+			return "size of";
+		case Doer::MethodType::NEW:
+			return "new";
+		default:
+			break;
+		}
+	}
 }

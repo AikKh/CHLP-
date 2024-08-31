@@ -7,19 +7,23 @@ namespace Doer {
 
 	class AccessAction : public ActionNode {
 	public:
-		AccessAction(StackFrame& stack, const string& id) :
-			_stack{ stack }, _id{ id }
+		AccessAction(StackFrame*& stack, const string& id) :
+			m_stack{ stack }, m_id{ id }
 		{}
 
-		Object Execute() const override {
-			auto [type, address] = _stack.GetInfo(_id);
-			const void* ptr = _stack.GetPtrByStackAddress(address);
+		shared_ptr<Object> Execute() const override
+		{
+			auto res = m_stack->Get(m_id);
 
-			return Object::Copy(type, ptr); // a = b would be always by value. May change this in the future
+			if (!res)
+			{
+				error.Report("Unknown variable " + m_id, ErrorPriority::RUNTIME_ERROR);
+			}
+			return res;
 		}
 
 	private:
-		StackFrame& _stack;
-		const string& _id;
+		StackFrame*& m_stack;
+		const string& m_id;
 	};
 }

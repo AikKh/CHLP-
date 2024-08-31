@@ -7,28 +7,38 @@ namespace Doer {
 
 	class FunctionCallNode : public Node {
 	public:
-		FunctionCallNode(Node* value, Node* args = nullptr) : _value(value), _args(args) {}
+		FunctionCallNode(Node* value, Node* args) : m_value(value), m_args(args) {}
 
 		~FunctionCallNode() override {
-			delete _value;
-			delete _args;
+			delete m_value;
+			delete m_args;
 		}
 
 		void Print(int level = 0) const override {
 			string ind = string(level, ' ');
 
 			cout << ind << "Function call: " << endl;
-			_value->Print(level + Indedention);
+			m_value->Print(level + Indedention);
 
 			cout << ind << "Arguments: " << endl;
-			_args->Print(level + Indedention);
+			m_args->Print(level + Indedention);
 		}
 
-		ActionNode* Accept(Visitor& runner) const override;
+		ActionNode* Accept(ActionTreeGenerator&) const override;
+
+		const Node* GetValue() const
+		{
+			return m_value;
+		}
+
+		const Node* GetArgs() const
+		{
+			return m_args;
+		}
 
 	private:
 		// Value can be another function call, so it's typed Node* 
-		Node* _value;
-		Node* _args;
+		Node* m_value;
+		Node* m_args;
 	};
 }

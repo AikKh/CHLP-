@@ -22,10 +22,10 @@ namespace Doer {
 		Equals,
 		NotEquals,
 
-		Smaller,
-		SmallerOrEqual,
-		Bigger,
-		BiggerOrEqual,
+		Less,
+		LessOrEqual,
+		Greater,
+		GreaterOrEqual,
 
 		Add,
 		Sub,
@@ -106,10 +106,10 @@ namespace Doer {
 			{ OperatorId::Equals,		  Operator("==",  7,	Operator::BOTH) },
 			{ OperatorId::NotEquals,	  Operator("!=",  7,	Operator::BOTH) },
 
-			{ OperatorId::Smaller,		  Operator("<",   6,	Operator::BOTH) },
-			{ OperatorId::SmallerOrEqual, Operator("<=",  6,	Operator::BOTH) },
-			{ OperatorId::Bigger,		  Operator(">",   6,	Operator::BOTH) },
-			{ OperatorId::BiggerOrEqual,  Operator(">=",  6,	Operator::BOTH) },
+			{ OperatorId::Less,		  Operator("<",   6,	Operator::BOTH) },
+			{ OperatorId::LessOrEqual, Operator("<=",  6,	Operator::BOTH) },
+			{ OperatorId::Greater,		  Operator(">",   6,	Operator::BOTH) },
+			{ OperatorId::GreaterOrEqual,  Operator(">=",  6,	Operator::BOTH) },
 
 			{ OperatorId::Add,			  Operator("+",   4,	Operator::BOTH) },
 			{ OperatorId::Sub,			  Operator("-",   4,	Operator::BOTH) },

@@ -1,0 +1,17 @@
+# Incorrect
+
+[fib][n] 
+{
+    a = n * 2;
+}
+(
+    $n
+    (
+        [0] (0)
+        [1] (1)
+        [_] (fib[n - 1] + fib[n - 2])   
+    )
+)
+
+# Test the Fibonacci function
+result = fib[10];

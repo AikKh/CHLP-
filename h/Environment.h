@@ -3,6 +3,9 @@
 #include "Lexer.h"
 #include "Parser.h"
 #include "Interpretation/ActionTreeGenerator.h"
+#include "MemoryManagement/StackFrame.h"
+#include "ActionNode.h"
+#include "../h/Interpretation/Validator.h"
 
 namespace Doer {
 
@@ -13,7 +16,7 @@ namespace Doer {
         Enviroment() : _stack{ StackFrame::Open() } {}
 
         ~Enviroment() {
-            StackFrame::Close(_stack);
+            _stack = StackFrame::Close(_stack);
         }
 
         int Run(const string& filename) {
@@ -58,10 +61,12 @@ namespace Doer {
             }
 
             cout << "Valid code" << endl;
-            /*cout << "Generating action tree..." << endl;
+
+#pragma region Interpretation
+            cout << "Generating action tree..." << endl;
 
             Validator validator;
-            ActionTreeGenerator generator{ *_stack, validator };
+            ActionTreeGenerator generator{ _stack, validator };
             ActionNode* action_tree = generator.Visit(root);
 
             if (!error.IsOk()) {
@@ -75,7 +80,7 @@ namespace Doer {
 
             cout << "Running code" << endl;
 
-            Object result = action_tree->Execute();
+            auto result = action_tree->Execute();
 
             if (!error.IsOk()) {
                 delete root;
@@ -90,10 +95,12 @@ namespace Doer {
 
             _stack->Print();
 
-            cout << "=============================================================" << endl;*/
+            cout << "=============================================================" << endl;
+
+#pragma endregion
 
             delete root;
-            //delete action_tree;
+            delete action_tree;
             return 0;
         }
 

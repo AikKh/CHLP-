@@ -12,12 +12,12 @@ namespace Doer {
 			delete _next;
 		}
 
-		ActionNode* Accept(Visitor& runner) const override;
-
 		void Print(int level = 0) const override {
 			LeafNode::Print(level);
 			_next->Print(level + Indedention);
 		}
+
+		ActionNode* Accept(ActionTreeGenerator&) const override;
 
 	private:
 		Node* _next;

@@ -1,10 +1,10 @@
 #pragma once
 
 #include "../ActionNode.h"
-//#include "../Interpretation/ObjectManager.h"
+#include "../MemoryManagement/ObjectGenerator.h"
 
-namespace Doer {
-
+namespace Doer 
+{
 	class OperationAction : public ActionNode {
 	public:
 		// Takes: stack, name of var, action node for the right part
@@ -12,29 +12,74 @@ namespace Doer {
 			_left{ left }, _right{ right }, _operator_id{ operator_id }
 		{}
 
-		Object Execute() const override {
-			Object l = _left->Execute();
-			Object r = _right->Execute();
+		shared_ptr<Object> Execute() const override {
+			auto l = _left->Execute();
+			auto r = _right->Execute();
 
-			auto op = GetOperation(l.GetType(), r.GetType());
-			if (op)
-			{
-				return op(move(l), move(r));
-			}
-			
-			error.Report("Failed to perform: " + 
-				l.GetType().ToString() + " " + operators.GetStringFromId(_operator_id) + " " + r.GetType().ToString(),
-				ErrorPriority::RUNTIME_ERROR);
+			MethodType method = ConvertOperatorIdToMethod();
 
-			return Object::None();
+			return TryToCallMethod(method, l, r);
 		}
 
 	private:
-		inline function<Object(Object, Object)> GetOperation(Type t1, Type t2) const 
+		Object::ObjectPtr TryToCallMethod(MethodType method, Object::ObjectPtr& left, Object::ObjectPtr& right) const
 		{
-			// TODO: Add validation if no operation
-			//return ObjectManager::GetOperation(_operator_id, t1.GetID(), t2.GetID());
+			Object::ObjectPtr res;
+
+			res = left->CallMethod(method, { right });
+
+			if (res)
+				return res;
+
+			error.Report(
+				TypeToString(left->GetType()) + " " + TypeToString(method) + " " + TypeToString(right->GetType()) + " is undefined",
+				ErrorPriority::RUNTIME_ERROR);
 			return nullptr;
+		}
+
+		MethodType ConvertOperatorIdToMethod() const
+		{
+			switch (_operator_id)
+			{
+			case Doer::OperatorId::Add:
+				return MethodType::ADD;
+
+			case Doer::OperatorId::Sub:
+				return MethodType::SUB;
+			
+			case Doer::OperatorId::Mul:
+				return MethodType::MUL;
+			
+			case Doer::OperatorId::Div:
+				return MethodType::DIV;
+			
+			case Doer::OperatorId::Less:
+				return MethodType::LESS_THEN;
+			
+			case Doer::OperatorId::LessOrEqual:
+				return MethodType::LESS_EQUAL;
+			
+			case Doer::OperatorId::Greater:
+				return MethodType::GREATER_THEN;
+			
+			case Doer::OperatorId::GreaterOrEqual:
+				return MethodType::GREATER_EQUAL;
+			
+			case Doer::OperatorId::Equals:
+				return MethodType::EQUAL;
+			
+			case Doer::OperatorId::NotEquals:
+				return MethodType::NOT_EQUAL;
+			
+			case Doer::OperatorId::And:
+				return MethodType::AND;
+			
+			case Doer::OperatorId::Or:
+				return MethodType::OR;
+
+			default:
+				throw std::logic_error("OperationAction failed to find suitable action");
+			}
 		}
 
 	private:

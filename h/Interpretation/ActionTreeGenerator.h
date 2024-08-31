@@ -1,139 +1,51 @@
 #pragma once
 
-#include "Visitor.h"
-#include "Validator.h"
-#include "ObjectManager.h"
+namespace Doer 
+{
+	class StackFrame;
+	class Validator;
 
-// AST nodes
-#include "../NodeTypes/BinaryNode.h"
-#include "../NodeTypes/CompoundNode.h"
-#include "../NodeTypes/UnaryNode.h"
-#include "../NodeTypes/FunctionNode.h"
-#include "../NodeTypes/NullNode.h"
-#include "../NodeTypes/FunctionCallNode.h"
+	class BinaryNode;
+	class CompoundNode;
+	class FunctionCallNode;
+	class FunctionNode;
+	class IfNode;
+	class LeafNode;
+	class NullNode;
+	class ReturnNode;
+	class UnaryNode;
 
-// Apt nodes
-#include "../ActionNodes/AccessAction.h"
-#include "../ActionNodes/AssignAction.h"
-#include "../ActionNodes/ListAction.h"
-#include "../ActionNodes/LiteralAction.h"
-#include "../ActionNodes/OperationAction.h"
-#include "../ActionNodes/NoAction.h"
+	class ActionNode;
 
-namespace Doer {
-
-	// Action tree
-	class ActionTreeGenerator : public Visitor {
+	class ActionTreeGenerator {
 	public:
-		/*AptGenerator() {
-			_currentFrame = StackFrame::Open();
-			_function = Functionality();
-		}
+		ActionTreeGenerator(StackFrame*& stack_ref, const Validator& validtor);
 
-		~AptGenerator() {
-			_currentFrame->Print();
-			StackFrame::Close(_currentFrame);
-		}*/
+		ActionNode* Visit(const BinaryNode* node);
 
-		ActionTreeGenerator(StackFrame& stack_ref, const Validator& validtor) : _currentFrame{ stack_ref }, _validtor{validtor} {}
+		ActionNode* Visit(const CompoundNode* node);
 
-		ActionNode* Visit(const BinaryNode* node) override {
-			// TODO: Refactor here
-			if (IsAssignment(node)) {
+		ActionNode* Visit(const FunctionCallNode* node);
 
-				// Getting id of variable
-				const LeafNode* left;
-				if (!(left = dynamic_cast<const LeafNode*>(node->GetLeft()))) {
-					throw std::logic_error("VALIDATOR LIED TO US");
-				}
+		ActionNode* Visit(const FunctionNode* node);
 
-				auto right = node->GetRight()->Accept(*this);
-				return new AssignAction(_currentFrame, left->GetValue().GetText(), right);
-			}
+		ActionNode* Visit(const LeafNode* node);
 
-			else if (operators.IsOperator(node->GetValue().GetText())) {
-				return HandleOperation(node);
-			}
+		ActionNode* Visit(const NullNode* node);
 
-			error.Report("Invalid operator " + node->GetValue().GetText() + " (which shouldn't be handled in this stage but anyways)",
-				ErrorPriority::SOURCE_ERROR, &node->GetValue());
-			return nullptr;
-		}
+		ActionNode* Visit(const UnaryNode* node);
 
-		ActionNode* Visit(const CompoundNode* node) override {
-			auto result = new ListAction();
+		ActionNode* Visit(const IfNode* node);
 
-			for (const auto& n : node->nodes) {
-				result->AddAction(move(unique_ptr<ActionNode>(n->Accept(*this))));
-			}
-
-			return result;
-		}
-
-		ActionNode* Visit(const FunctionCallNode* node) override {
-			throw std::logic_error("Function not yet implemented");
-		}
-
-		ActionNode* Visit(const FunctionNode* node) override {
-			throw std::logic_error("Function not yet implemented");
-		}
-
-		ActionNode* Visit(const LeafNode* node) override {
-			auto type = node->GetValue().GetType();
-
-			if (type == Token::LITERAL) {
-				return new LiteralAction(node->GetValue().GetText());
-			}
-			else if (type == Token::IDENTIFIER) {
-				return new AccessAction(_currentFrame, node->GetValue().GetText());
-			}
-
-			error.Report("Invalid token " + node->GetValue().GetText() + " (which also shouldn't be handled in this stage)",
-				ErrorPriority::SOURCE_ERROR, &node->GetValue());
-			return nullptr;
-		}
-
-		ActionNode* Visit(const NullNode* node) override {
-			return new NoAction();
-		}
-
-		ActionNode* Visit(const UnaryNode* node) override {
-			throw std::logic_error("Function not yet implemented");
-		}
+		ActionNode* Visit(const ReturnNode* node);
 
 	private:
-		inline bool IsAssignment(const BinaryNode* node)
-		{
-			if (node->GetValue().GetText() == "=")
-			{
-				if (_validtor.IsVariable(node->GetLeft()))
-				{
-					return true;
-				}
+		inline bool IsAssignment(const BinaryNode* node);
 
-				return false;
-			}
-
-			return false;
-		}
-
-		OperationAction* HandleOperation(const BinaryNode* node) {
-			auto operand1 = node->GetLeft()->Accept(*this);
-			auto operand2 = node->GetRight()->Accept(*this);
-			auto& text = node->GetValue().GetText();
-
-			OperatorId id{};
-			if (operators.SearchOperatorId(text, id))
-			{
-				return new OperationAction(operand1, operand2, id);
-			}
-
-			error.Report("Unknown operator: " + text, ErrorPriority::SOURCE_ERROR);
-			return nullptr;
-		}
+		ActionNode* HandleOperation(const BinaryNode* node);
 
 	private:
-		StackFrame& _currentFrame;
-		const Validator& _validtor;
+		StackFrame*& m_currentStack;
+		const Validator& m_validtor;
 	};
 }

@@ -8,7 +8,7 @@ namespace Doer {
 	public:
 		~NullNode() override = default;
 
-		ActionNode* Accept(Visitor& runner) const override;
+		ActionNode* Accept(ActionTreeGenerator&) const override;
 
 		void Print(int level = 0) const override {
 			cout << string(level, ' ') << "NULL Node" << endl;

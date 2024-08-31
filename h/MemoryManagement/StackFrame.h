@@ -5,66 +5,35 @@
 
 namespace Doer {
 
-	struct VariableInfo {
-		Type type;
-		unsigned int address;
-
-		VariableInfo(const Type& type, int address) : type(type), address(address) { }
-
-		VariableInfo() : VariableInfo(Type::Get(TypeId::VOID), 0) {}
-
-		VariableInfo(const VariableInfo& other) : VariableInfo(other.type, other.address) {}
-	};
-
 	class StackFrame {
 	public:
 		static StackFrame* Open(StackFrame* previous = nullptr) {
 			return new StackFrame(previous);
 		}
 
-		static void Close(StackFrame*& current) {
+		static StackFrame* Close(StackFrame* current) {
+			auto prev = current->_previous;
 			delete current;
-			current = current->_previous;
+			return prev;
 		}
 
-		void Set(string name, const Type& type, void* valueAddress) {
-			if (!InTable(name)) {
-				Add(name, type);
+		void Set(const string& name, shared_ptr<Object> obj) {
+			std::cout << "SET: " << name << endl;
+			m_symbolTable[name] = std::move(obj);
+		}
+
+		shared_ptr<Object> Get(const string& name) const
+		{
+			if (!(InTable(name)))
+			{
+				return nullptr;
 			}
-
-			int address = GetAddress(name);
-
-			// TODO: Refactor into separete method
-			if (type.GetSize() != GetType(name).GetSize()) {
-				auto ptr = realloc(_stack[address], type.GetSize());
-
-				if (ptr == nullptr) {
-					throw std::runtime_error("Failed to reallocate memory");
-				}
-				_stack[address] = ptr;
-				_symbolTable.at(name).type = type;
-			}
-
-			std::memcpy(_stack[address], valueAddress, type.GetSize());
-
+			return m_symbolTable.at(name);
 		}
 
-		// TODO: return the var type, like Type*& type
-		VariableInfo GetInfo(const string& name) {
-			if (InTable(name)) {
-				return _symbolTable[name];
-			}
-
-			error.Report("The variable " + name + " is not declared", ErrorPriority::RUNTIME_ERROR);
-			return VariableInfo(Type::Get(TypeId::VOID), -1);
-		}
-
-		inline const void* GetPtrByStackAddress(int address) {
-			return _stack[address];
-		}
-
-		inline const Type& GetType(const string& name) {
-			return _symbolTable.at(name).type;
+		const StackFrame* GetPrevious() const
+		{
+			return _previous;
 		}
 
 	private:
@@ -74,39 +43,40 @@ namespace Doer {
 
 		~StackFrame() {
 			cout << "Stack frame closed" << endl;
-			for (auto& ptr : _stack) {
-				delete ptr;
-			}
 		}
 
-		void Add(string name, const Type& type) {
-			void* address = malloc(type.GetSize());
-			_stack.push_back(address);
-
-			_symbolTable[name] = VariableInfo(type, _stack.size() - 1);
-		}
-
-		inline bool InTable(const string& name) {
-			return _symbolTable.find(name) != _symbolTable.end();
-		}
-
-		inline int GetAddress(const string& name) {
-			return _symbolTable.at(name).address;
+		inline bool InTable(const string& name) const {
+			return m_symbolTable.find(name) != m_symbolTable.end();
 		}
 
 	public:
-
 		void Print() {
-			for (const auto& pair : _symbolTable) {
-				cout << pair.first << ": " << *((int*)_stack[pair.second.address]) << endl;
+			for (const auto& [name, obj] : m_symbolTable) {
+				switch (obj->GetType())
+				{
+				case Type::FLOAT:
+					cout << name << ": " << *((float*)obj->GetPtr()) << endl;
+					break;
+				case Type::INT:
+					cout << name << ": " << *((int*)obj->GetPtr()) << endl;
+					break;
+				case Type::BOOL:
+					cout << name << ": " << (*((bool*)obj->GetPtr()) ? "true" : "false") << endl;
+					break;
+				case Type::NONE:
+					cout << name << ": none" << endl;
+					break;
+				case Type::FUNCTION:
+					cout << "Funcion: " << name << endl;
+				default:
+					break;
+				}
+				
 			}
 		}
 
 	private:
-
-		unordered_map<string, VariableInfo> _symbolTable;
-		vector<void*> _stack;
-
+		unordered_map<string, shared_ptr<Object>> m_symbolTable;
 		StackFrame* _previous;
 	};
 }

@@ -1,0 +1,46 @@
+program            ::= statements END_OF_FILE
+
+statements         ::= statement { statement }
+
+statement          ::= ((expr ";") | function | if_stmt | for_stmt | (return_stmt ";")) 
+
+// Expressions (unchanged)
+expr               ::= logic_or_expr { "=" expr }
+
+logic_or_expr      ::= logic_and_expr { "or" logic_and_expr }
+logic_and_expr     ::= equality_expr { "and" equality_expr }
+
+equality_expr      ::= comparison_expr { ("==" | "!=") comparison_expr }
+comparison_expr    ::= add_expr { ("<" | ">" | "<=" | ">=") add_expr }
+
+add_expr           ::= mult_expr { ("+" | "-") mult_expr }
+mult_expr          ::= unary_expr { ("*" | "/") unary_expr }
+
+unary_expr         ::= primary_expr | "not" unary_expr | "+" unary_expr | "-" unary_expr
+
+primary_expr       ::= "(" expr ")" | number | boolean | id | function_call 
+
+// Vars, literals, and comments (unchanged)
+number             ::= digit { digit }
+id                 ::= letter { letter | digit }
+
+digit              ::= "0".."9"
+letter             ::= "a".."z" | "A".."Z"
+
+boolean			   ::= ("true" | "false")
+
+comment            ::= "#" {any_character_except_newline} newline
+
+// Function (updated)
+function           ::= "[" id "]" "(" [param_list] ")" "{" [statements] "}"
+param_list         ::= id { "," id }
+
+// New statements
+cond_stmt          ::= "if" expr cond_body { "elif" expr cond_body } ["else" cond_body]
+cond_body          ::= "{" statements "}"
+for_stmt           ::= "for" id "in" expr "{" statements "}"
+return_stmt        ::= "return" [expr]
+
+// Function call (updated)
+function_call      ::= id "(" [arg_list] ")"
+arg_list           ::= expr { "," expr }

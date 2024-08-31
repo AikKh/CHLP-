@@ -1,7 +1,6 @@
 #include "../../h/NodeTypes/LeafNode.h"
-#include "../../h/Interpretation/Visitor.h"
 
-Doer::ActionNode* Doer::LeafNode::Accept(Visitor& visitor) const
+Doer::ActionNode* Doer::LeafNode::Accept(ActionTreeGenerator& visitor) const
 {
 	return visitor.Visit(this);
 }

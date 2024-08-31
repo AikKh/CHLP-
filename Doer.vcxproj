@@ -131,6 +131,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\ActionNodes\CompoundAction.cpp" />
+    <ClCompile Include="src\ObjectGenerator.cpp" />
+    <ClCompile Include="src\ActionTreeGenerator.cpp" />
+    <ClCompile Include="src\NodeTypes\ReturnNode.cpp" />
+    <ClCompile Include="src\NodeTypes\IfNode.cpp" />
     <ClCompile Include="src\ObjectManager.cpp" />
     <ClCompile Include="src\NodeTypes\CompoundNode.cpp" />
     <ClCompile Include="src\NodeTypes\FunctionCallNode.cpp" />
@@ -146,36 +151,37 @@
     <ClCompile Include="src\Lexer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="src\Token.cpp" />
-    <ClCompile Include="src\Type.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="h\ActionNode.h" />
     <ClInclude Include="h\ActionNodes\AccessAction.h" />
+    <ClInclude Include="h\ActionNodes\FunctionAction.h" />
+    <ClInclude Include="h\ActionNodes\FunctionCallAction.h" />
+    <ClInclude Include="h\ActionNodes\IfAction.h" />
     <ClInclude Include="h\ActionNodes\NoAction.h" />
     <ClInclude Include="h\ActionNodes\AssignAction.h" />
-    <ClInclude Include="h\ActionNodes\ListAction.h" />
+    <ClInclude Include="h\ActionNodes\CompoundAction.h" />
     <ClInclude Include="h\ActionNodes\LiteralAction.h" />
     <ClInclude Include="h\ActionNodes\OperationAction.h" />
+    <ClInclude Include="h\ActionNodes\ReturnAction.h" />
     <ClInclude Include="h\AllOperators.h" />
     <ClInclude Include="h\ErrorHandler.h" />
-    <ClInclude Include="h\FunctionModes\Conditional.h" />
-    <ClInclude Include="h\FunctionModes\Immediate.h" />
-    <ClInclude Include="h\FunctionModes\Regular.h" />
     <ClInclude Include="h\Includes.h" />
+    <ClInclude Include="h\MemoryManagement\ObjectGenerator.h" />
     <ClInclude Include="h\Interpretation\ObjectManager.h" />
     <ClInclude Include="h\Interpretation\Validator.h" />
     <ClInclude Include="h\MemoryManagement\Object.h" />
-    <ClInclude Include="h\Interpretation\Visitor.h" />
     <ClInclude Include="h\Lexer.h" />
     <ClInclude Include="h\Interpretation\ActionTreeGenerator.h" />
     <ClInclude Include="h\MemoryManagement\StackFrame.h" />
-    <ClInclude Include="h\Mode.h" />
     <ClInclude Include="h\Node.h" />
     <ClInclude Include="h\NodeTypes\FunctionCallNode.h" />
     <ClInclude Include="h\NodeTypes\FunctionNode.h" />
     <ClInclude Include="h\NodeTypes\CompoundNode.h" />
+    <ClInclude Include="h\NodeTypes\IfNode.h" />
     <ClInclude Include="h\NodeTypes\LeafNode.h" />
     <ClInclude Include="h\NodeTypes\NullNode.h" />
+    <ClInclude Include="h\NodeTypes\ReturnNode.h" />
     <ClInclude Include="h\NodeTypes\UnaryNode.h" />
     <ClInclude Include="h\Operator.h" />
     <ClInclude Include="h\Parser.h" />
@@ -187,8 +193,15 @@
     <None Include="pythonTests\ASTParser.py" />
     <None Include="pythonTests\SimpleParser.py" />
     <None Include="SyntaxDesign\ParserTable" />
+    <None Include="SyntaxDesign\SyntaxDesighImproved.bnf" />
+    <None Include="SyntaxDesign\SyntaxDesignWithKeywords.bnf" />
     <None Include="tests\fibonacci.dr" />
+    <None Include="tests\fibonacci_improved.dr" />
+    <None Include="tests\fibonacci_with_keywords.dr" />
+    <None Include="tests\function_test.dr" />
     <None Include="tests\lexerTest.dr" />
+    <None Include="tests\newSyntaxTest.dr" />
+    <None Include="tests\new_stack_test.dr" />
     <None Include="tests\ParserTest.dr" />
     <None Include="tests\ParserTest2.dr" />
     <None Include="tests\ParserTest3.dr" />

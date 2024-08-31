@@ -36,9 +36,6 @@
     <ClCompile Include="src\AllOperators.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Type.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\NodeTypes\BinaryNode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -61,6 +58,21 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\ObjectManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NodeTypes\IfNode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NodeTypes\ReturnNode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ActionTreeGenerator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ObjectGenerator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ActionNodes\CompoundAction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -101,18 +113,6 @@
     <ClInclude Include="h\NodeTypes\LeafNode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="h\Mode.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="h\FunctionModes\Immediate.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="h\FunctionModes\Conditional.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="h\FunctionModes\Regular.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="h\NodeTypes\NullNode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -131,9 +131,6 @@
     <ClInclude Include="h\Environment.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="h\Interpretation\Visitor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="h\MemoryManagement\Object.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -143,7 +140,7 @@
     <ClInclude Include="h\Interpretation\Validator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="h\ActionNodes\ListAction.h">
+    <ClInclude Include="h\ActionNodes\CompoundAction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="h\ActionNodes\AssignAction.h">
@@ -164,6 +161,27 @@
     <ClInclude Include="h\Interpretation\ObjectManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="h\NodeTypes\IfNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="h\NodeTypes\ReturnNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="h\MemoryManagement\ObjectGenerator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="h\ActionNodes\FunctionAction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="h\ActionNodes\FunctionCallAction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="h\ActionNodes\IfAction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="h\ActionNodes\ReturnAction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="tests\scope.dr" />
@@ -178,6 +196,13 @@
     <None Include="tests\ParserTest4.dr" />
     <None Include="tests\fibonacci.dr" />
     <None Include="tests\semantic_test1.dr" />
+    <None Include="SyntaxDesign\SyntaxDesignWithKeywords.bnf" />
+    <None Include="tests\newSyntaxTest.dr" />
+    <None Include="SyntaxDesign\SyntaxDesighImproved.bnf" />
+    <None Include="tests\fibonacci_improved.dr" />
+    <None Include="tests\fibonacci_with_keywords.dr" />
+    <None Include="tests\new_stack_test.dr" />
+    <None Include="tests\function_test.dr" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="SyntaxDesign\BNF_C.txt" />

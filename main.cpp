@@ -3,5 +3,5 @@
 int main()
 {
     Doer::Enviroment env;
-    return env.Run("tests/semantic_test1.dr");
+    return env.Run("tests/function_test.dr");
 }

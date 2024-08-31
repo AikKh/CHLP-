@@ -7,6 +7,6 @@ namespace Doer {
 	class ActionNode {
 	public:
 		virtual ~ActionNode() = default;
-		virtual Object Execute() const = 0;
+		virtual shared_ptr<Object> Execute() const = 0;
 	};
 }

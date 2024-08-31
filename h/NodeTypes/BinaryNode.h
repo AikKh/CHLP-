@@ -35,7 +35,7 @@ namespace Doer {
 				_right->Print(level + Indedention);
 		}
 
-		ActionNode* Accept(Visitor& runner) const override;
+		ActionNode* Accept(ActionTreeGenerator&) const override;
 
 	private:
 

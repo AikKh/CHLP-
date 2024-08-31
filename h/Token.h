@@ -13,6 +13,7 @@ namespace Doer {
 			IDENTIFIER,
 			OPERATOR,
 			KEYWORD,
+			BOOLEAN,
 			SCOPE,
 			COMMA,
 			LINE_END,
@@ -44,12 +45,17 @@ namespace Doer {
 			return !(*this == other);
 		}
 
-		const Type& GetType() const {
+		Type GetType() const {
 			return _type;
 		}
 
-		const string& GetText() const {
+		const string& GetText() const& {
 			return _text;
+		}
+
+		string GetText() &&
+		{
+			return std::move(_text);
 		}
 
 		static const Token Default() {
