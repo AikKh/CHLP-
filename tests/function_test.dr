@@ -1,6 +1,19 @@
+glob = 5;
+
 [sum][a, b]
 {
-	return a + b;
+	
+	return a + b + glob;
 }
 
-res = sum(1, 2);
+[max][a, b]
+{
+	if a > b{
+		return a;
+	}
+	return b;
+}
+
+a = sum(1, 2);
+b = max(a, 5);
+c = a * b;

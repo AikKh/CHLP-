@@ -3,5 +3,5 @@
 int main()
 {
     Doer::Enviroment env;
-    return env.Run("tests/function_test.dr");
+    return env.Run("tests/fibonacci_with_keywords.dr");
 }

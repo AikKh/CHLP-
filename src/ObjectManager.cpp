@@ -10,7 +10,7 @@ namespace Doer
         (*map)[std::make_tuple(Type::INT, Type::INT, MethodType::ADD)] = &Operation<int, int, int, MethodType::ADD>;
         (*map)[std::make_tuple(Type::INT, Type::INT, MethodType::SUB)] = &Operation<int, int, int, MethodType::SUB>;
         (*map)[std::make_tuple(Type::INT, Type::INT, MethodType::MUL)] = &Operation<int, int, int, MethodType::MUL>;
-        (*map)[std::make_tuple(Type::INT, Type::INT, MethodType::DIV)] = &Operation<int, int, int, MethodType::DIV>;
+        (*map)[std::make_tuple(Type::INT, Type::INT, MethodType::DIV)] = &Operation<int, int, float, MethodType::DIV>;
         (*map)[std::make_tuple(Type::INT, Type::INT, MethodType::MOD)] = &Operation<int, int, int, MethodType::MOD>;
 
         (*map)[std::make_tuple(Type::INT, Type::INT, MethodType::EQUAL)] =         &Operation<int, int, bool, MethodType::EQUAL>;
@@ -135,7 +135,8 @@ namespace Doer
                 error.Report("Division by zero", ErrorPriority::RUNTIME_ERROR);
                 return nullptr;
             }
-            value = *((float*)a->GetPtr()) / divisor;
+            float float_divisor = divisor;
+            value = *((T1*)a->GetPtr()) / float_divisor;
         }
         else if constexpr (method == MethodType::MOD)
         {

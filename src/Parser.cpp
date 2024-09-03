@@ -82,7 +82,7 @@ namespace Doer {
 	{
 		return ParseList([this]() {
 			return new LeafNode(Match(Token::IDENTIFIER));
-			}, "[", "]");
+			}, "(", ")");
 	}
 
 	string Doer::Parser::FunctionHeader()

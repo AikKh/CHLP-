@@ -22,6 +22,12 @@ namespace Doer
 
 			auto func = m_get_func->Execute();
 
+			if (!func)
+			{
+				error.Report("Got error while calling function", ErrorPriority::RUNTIME_ERROR);
+				return nullptr;
+			}
+
 			m_stack = StackFrame::Open(m_stack);
 			return func->CallMethod(MethodType::CALL, std::move(resolved_args));
 		}

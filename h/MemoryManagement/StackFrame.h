@@ -18,7 +18,6 @@ namespace Doer {
 		}
 
 		void Set(const string& name, shared_ptr<Object> obj) {
-			std::cout << "SET: " << name << endl;
 			m_symbolTable[name] = std::move(obj);
 		}
 
@@ -26,6 +25,10 @@ namespace Doer {
 		{
 			if (!(InTable(name)))
 			{
+				if (GetPrevious() != nullptr)
+				{
+					return GetPrevious()->Get(name);
+				}
 				return nullptr;
 			}
 			return m_symbolTable.at(name);
@@ -38,11 +41,11 @@ namespace Doer {
 
 	private:
 		StackFrame(StackFrame* previous) : _previous(previous) {
-			cout << "Stack frame opened" << endl;
+			//cout << "Stack frame opened" << endl;
 		}
 
 		~StackFrame() {
-			cout << "Stack frame closed" << endl;
+			//cout << "Stack frame closed" << endl;
 		}
 
 		inline bool InTable(const string& name) const {

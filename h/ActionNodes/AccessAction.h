@@ -23,7 +23,7 @@ namespace Doer {
 		}
 
 	private:
-		StackFrame*& m_stack;
+		StackFrame*&  m_stack;
 		const string& m_id;
 	};
 }

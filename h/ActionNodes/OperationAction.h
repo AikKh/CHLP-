@@ -16,6 +16,12 @@ namespace Doer
 			auto l = _left->Execute();
 			auto r = _right->Execute();
 
+			if (!l || !r)
+			{
+				error.Report("Got error while performing operation", ErrorPriority::RUNTIME_ERROR);
+				return nullptr;
+			}
+
 			MethodType method = ConvertOperatorIdToMethod();
 
 			return TryToCallMethod(method, l, r);

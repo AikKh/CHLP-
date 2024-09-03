@@ -8,7 +8,7 @@ namespace Doer
 
 	class AssignAction : public ActionNode {
 	public:
-		AssignAction(StackFrame* stack, const string& id, ActionNode* right) :
+		AssignAction(StackFrame*& stack, const string& id, ActionNode* right) :
 			_stack{ stack }, _id{ id }, _right{ right }
 		{} 
 
@@ -20,7 +20,7 @@ namespace Doer
 		}
 
 	private:
-		StackFrame* _stack;
+		StackFrame*& _stack;
 		const string& _id;
 		unique_ptr<ActionNode> _right;
 	};
