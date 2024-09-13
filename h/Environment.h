@@ -23,7 +23,7 @@ namespace Doer {
             //ObjectManager::InitializeOperations();
 
             // Opening
-            string content = ReadFileIntoString(filename);
+            string content = ConvertFileIntoString(filename);
 
             // Lexical analysis
             Lexer lexer;
@@ -105,7 +105,7 @@ namespace Doer {
         }
 
     private:
-        static string ReadFileIntoString(const string& filename) {
+        static string ConvertFileIntoString(const string& filename) {
             std::ifstream file(filename);
 
             if (file.is_open()) {
