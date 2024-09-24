@@ -6,7 +6,7 @@
 
 namespace Doer
 {
-    Object::ObjectPtr Doer::CompoundAction::ExecuteWithReturn(StackFrame*& stack) const
+    Object::ObjectPtr Doer::CompoundAction::ExecuteWithReturn(shared_ptr<Stack> stack) const
 	{
 		bool returned = false;
 
@@ -32,7 +32,7 @@ namespace Doer
 			}
 		}
 
-		stack = StackFrame::Close(stack);
+		stack->Close();
 		return ObjectGenerator::GenerateNone();
 	}
 }

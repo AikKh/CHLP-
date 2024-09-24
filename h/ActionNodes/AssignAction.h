@@ -5,11 +5,10 @@
 
 namespace Doer 
 {
-
 	class AssignAction : public ActionNode {
 	public:
-		AssignAction(StackFrame*& stack, const string& id, ActionNode* right) :
-			_stack{ stack }, _id{ id }, _right{ right }
+		AssignAction(shared_ptr<Stack> stack, const string& id, ActionNode* right) :
+			_stack{ std::move(stack) }, _id{ id }, _right{ right }
 		{} 
 
 		shared_ptr<Object> Execute() const override {
@@ -20,7 +19,7 @@ namespace Doer
 		}
 
 	private:
-		StackFrame*& _stack;
+		shared_ptr<Stack> _stack;
 		const string& _id;
 		unique_ptr<ActionNode> _right;
 	};

@@ -12,13 +12,4 @@
 	return fib(n - 1) + fib(n - 2);
 }
 
-[foo](a, b, policy) {
-	return policy(a, b);
-}
-
-ratio1 = fib(5) / fib(4);
-ratio2 = fib(6) / fib(5);
-ratio3 = fib(7) / fib(6);
-ratio4 = fib(8) / fib(7);
-ratio5 = fib(9) / fib(8);
-
+a = fib(10);

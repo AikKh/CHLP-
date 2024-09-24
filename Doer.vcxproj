@@ -167,6 +167,7 @@
     <ClInclude Include="h\AllOperators.h" />
     <ClInclude Include="h\ErrorHandler.h" />
     <ClInclude Include="h\Includes.h" />
+    <ClInclude Include="h\MemoryManagement\ObjectCache.h" />
     <ClInclude Include="h\MemoryManagement\ObjectGenerator.h" />
     <ClInclude Include="h\Interpretation\ObjectManager.h" />
     <ClInclude Include="h\Interpretation\Validator.h" />
@@ -200,7 +201,9 @@
     <None Include="tests\fibonacci_with_keywords.dr" />
     <None Include="tests\function_test.dr" />
     <None Include="tests\lexerTest.dr" />
+    <None Include="tests\memory_leak_test.dr" />
     <None Include="tests\newSyntaxTest.dr" />
+    <None Include="tests\new_stack_logic_test.dr" />
     <None Include="tests\new_stack_test.dr" />
     <None Include="tests\ParserTest.dr" />
     <None Include="tests\ParserTest2.dr" />

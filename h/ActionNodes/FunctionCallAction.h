@@ -7,8 +7,8 @@ namespace Doer
 {
 	class FunctioCallAction : public ActionNode {
 	public:
-		FunctioCallAction(StackFrame*& stack, unique_ptr<ActionNode> get_func, vector<unique_ptr<ActionNode>> args) :
-			m_stack{ stack }, m_get_func{ std::move(get_func) }, m_args{ std::move(args) }
+		FunctioCallAction(shared_ptr<Stack> stack, unique_ptr<ActionNode> get_func, vector<unique_ptr<ActionNode>> args) :
+			m_stack{ std::move(stack) }, m_get_func{ std::move(get_func) }, m_args{ std::move(args) }
 		{}
 
 		shared_ptr<Object> Execute() const override
@@ -28,12 +28,12 @@ namespace Doer
 				return nullptr;
 			}
 
-			m_stack = StackFrame::Open(m_stack);
+			m_stack->Open();
 			return func->CallMethod(MethodType::CALL, std::move(resolved_args));
 		}
 
 	private:
-		StackFrame*& m_stack;
+		shared_ptr<Stack> m_stack;
 		unique_ptr<ActionNode> m_get_func;
 		vector <unique_ptr< ActionNode >> m_args;
 	};

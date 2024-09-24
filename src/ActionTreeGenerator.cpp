@@ -29,7 +29,7 @@
 
 namespace Doer
 {
-	ActionTreeGenerator::ActionTreeGenerator(StackFrame*& stack_ref, const Validator& validtor) : m_currentStack{ stack_ref }, m_validtor{ validtor } {}
+	ActionTreeGenerator::ActionTreeGenerator(shared_ptr<Stack> stack, const Validator& validtor) : m_stack{ std::move(stack) }, m_validtor{ validtor } {}
 
 	ActionNode* Doer::ActionTreeGenerator::Visit(const BinaryNode* node)
 	{
@@ -43,7 +43,7 @@ namespace Doer
 			}
 		
 			auto right = node->GetRight()->Accept(*this);
-			return new AssignAction(m_currentStack, left->GetValue().GetText(), right);
+			return new AssignAction(m_stack, left->GetValue().GetText(), right);
 		}
 		
 		else if (operators.IsOperator(node->GetValue().GetText()))
@@ -86,7 +86,7 @@ namespace Doer
 			args.push_back(unique_ptr<ActionNode>(n->Accept(*this)));
 		}
 
-		return new FunctioCallAction(m_currentStack, std::move(get_func), std::move(args));
+		return new FunctioCallAction(m_stack, std::move(get_func), std::move(args));
 	}
 
 
@@ -109,7 +109,7 @@ namespace Doer
 
 		auto body = unique_ptr<ActionNode>(node->GetBody()->Accept(*this));
 		
-		return new FunctionAction(m_currentStack, node->GetName(), std::move(args), std::move(body));
+		return new FunctionAction(m_stack, node->GetName(), std::move(args), std::move(body));
 	}
 
 
@@ -123,7 +123,7 @@ namespace Doer
 		}
 		else if (type == Token::IDENTIFIER)
 		{
-			return new AccessAction(m_currentStack, node->GetValue().GetText());
+			return new AccessAction(m_stack, node->GetValue().GetText());
 		}
 
 		error.Report("Invalid token " + node->GetValue().GetText() + " (which also shouldn't be handled in this stage)",
@@ -162,13 +162,13 @@ namespace Doer
 			m_else = unique_ptr<ActionNode>(node->GetElseBody()->Accept(*this));
 		}
 
-		return new IfAction(std::move(m_conditions), std::move(m_bodies), std::move(m_else), m_currentStack);
+		return new IfAction(std::move(m_conditions), std::move(m_bodies), std::move(m_else), m_stack);
 	}
 
 	ActionNode* ActionTreeGenerator::Visit(const ReturnNode* node)
 	{
 		ActionNode* action = node->GetExpression()->Accept(*this);
-		return new ReturnAction(action, m_currentStack);
+		return new ReturnAction(action, m_stack);
 	}
 
 	inline bool ActionTreeGenerator::IsAssignment(const BinaryNode* node)

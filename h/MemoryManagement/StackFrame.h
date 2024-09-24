@@ -3,21 +3,14 @@
 #include "Object.h"
 #include "../ErrorHandler.h"
 
-namespace Doer {
-
+namespace Doer
+{
 	class StackFrame {
 	public:
-		static StackFrame* Open(StackFrame* previous = nullptr) {
-			return new StackFrame(previous);
-		}
+		explicit StackFrame(StackFrame* previous) : m_previous(previous) {}
 
-		static StackFrame* Close(StackFrame* current) {
-			auto prev = current->_previous;
-			delete current;
-			return prev;
-		}
-
-		void Set(const string& name, shared_ptr<Object> obj) {
+		void Set(const string& name, shared_ptr<Object> obj)
+		{
 			m_symbolTable[name] = std::move(obj);
 		}
 
@@ -34,27 +27,90 @@ namespace Doer {
 			return m_symbolTable.at(name);
 		}
 
-		const StackFrame* GetPrevious() const
+		StackFrame* GetPrevious() const
 		{
-			return _previous;
+			return m_previous;
 		}
 
 	private:
-		StackFrame(StackFrame* previous) : _previous(previous) {
-			//cout << "Stack frame opened" << endl;
-		}
-
-		~StackFrame() {
-			//cout << "Stack frame closed" << endl;
-		}
-
-		inline bool InTable(const string& name) const {
+		inline bool InTable(const string& name) const
+		{
 			return m_symbolTable.find(name) != m_symbolTable.end();
 		}
 
+	private:
+		/*StackFrame& operator=(StackFrame&& other) noexcept
+		{
+			if (this == &other)
+			{
+				return *this;
+			}
+
+			m_symbolTable = std::move(other.m_symbolTable);
+			m_previous = other.m_previous;
+
+			other.m_previous = nullptr;
+
+			return *this;
+		}*/
+
+	private:
+		unordered_map<string, shared_ptr<Object>> m_symbolTable;
+		StackFrame* m_previous;
+
+		friend class Stack;
+	};
+
+	class Stack {
 	public:
-		void Print() {
-			for (const auto& [name, obj] : m_symbolTable) {
+		explicit Stack() : m_current{ new StackFrame{ nullptr } } {}
+
+		~Stack()
+		{
+			if (m_current->GetPrevious())
+			{
+				std::cout << "Someone didn't close the stack frame" << endl;
+			}
+
+			delete m_current;
+		}
+
+		void Open()
+		{
+			m_current = new StackFrame(m_current);
+		}
+
+		void Close()
+		{
+			if (!m_current)
+			{
+				throw std::logic_error("Trying to close stack when it's nullptr");
+			}
+
+			StackFrame* prev = m_current->GetPrevious();
+			delete m_current;
+			m_current = prev;
+		}
+
+		void Set(const string& name, shared_ptr<Object> obj)
+		{
+			return m_current->Set(name, obj);
+		}
+
+		shared_ptr<Object> Get(const string& name) const
+		{
+			return m_current->Get(name);
+		}
+
+		const StackFrame* GetPrevious() const
+		{
+			return m_current->GetPrevious();
+		}
+
+		void Print() const
+		{
+			for (const auto& [name, obj] : m_current->m_symbolTable)
+			{
 				switch (obj->GetType())
 				{
 				case Type::FLOAT:
@@ -64,7 +120,7 @@ namespace Doer {
 					cout << name << ": " << *((int*)obj->GetPtr()) << endl;
 					break;
 				case Type::BOOL:
-					cout << name << ": " << (*((bool*)obj->GetPtr()) ? "true" : "false") << endl;
+					cout << name << ": " << (*((bool*)obj->GetPtr())?"true":"false") << endl;
 					break;
 				case Type::NONE:
 					cout << name << ": none" << endl;
@@ -74,12 +130,11 @@ namespace Doer {
 				default:
 					break;
 				}
-				
+
 			}
 		}
 
 	private:
-		unordered_map<string, shared_ptr<Object>> m_symbolTable;
-		StackFrame* _previous;
+		StackFrame* m_current;
 	};
 }

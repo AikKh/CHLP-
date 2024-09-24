@@ -19,7 +19,7 @@ namespace Doer {
 			return nullptr;
 		}
 
-		Object::ObjectPtr ExecuteWithReturn(StackFrame*& stack) const;
+		Object::ObjectPtr ExecuteWithReturn(shared_ptr<Stack> stack) const;
 
 		void AddAction(unique_ptr<ActionNode> action) {
 			actions.push_back(move(action));

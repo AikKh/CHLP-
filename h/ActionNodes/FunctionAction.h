@@ -22,8 +22,8 @@ namespace Doer
 
 	class FunctionAction : public ActionNode {
 	public:
-		FunctionAction(StackFrame*& stack, const string& id, vector<string> args, unique_ptr<ActionNode> body) :
-			m_stack{ stack }, m_id{ id }, m_args{ std::move(args) }, m_body{std::move(body)}
+		FunctionAction(shared_ptr<Stack> stack, const string& id, vector<string> args, unique_ptr<ActionNode> body) :
+			m_stack{ std::move(stack) }, m_id{ id }, m_args{ std::move(args) }, m_body{ std::move(body) }
 		{} 
 
 		shared_ptr<Object> Execute() const override
@@ -32,17 +32,17 @@ namespace Doer
 
 			if (body == nullptr)
 			{
-				throw std::logic_error("Function body should be compoundnode");
+				throw std::logic_error("Function body should be compound node");
 			}
 
-			FunctionCore func{ m_args, body };
+			FunctionCore func{ std::move(m_args), body };
 			m_stack->Set(m_id, ObjectGenerator::GenerateFunction(std::move(func), m_stack));
 
 			return nullptr;
 		}
 
 	private:
-		StackFrame*& m_stack;
+		shared_ptr<Stack> m_stack;
 		const string& m_id;
 		vector<string> m_args;
 		unique_ptr<ActionNode> m_body;

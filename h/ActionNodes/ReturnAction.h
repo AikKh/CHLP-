@@ -8,20 +8,20 @@ namespace Doer
 {
 	class ReturnAction : public ActionNode {
 	public:
-		ReturnAction(ActionNode* expression, StackFrame*& stack) : m_expression{ expression }, m_stack{ stack } {}
+		ReturnAction(ActionNode* expression, shared_ptr<Stack> stack) : m_expression{ expression }, m_stack{ std::move(stack) } {}
 
 		shared_ptr<Object> Execute() const override
 		{
 			if (m_expression)
 			{
-				if (m_stack->GetPrevious() == nullptr)
+				if (const_cast<const Stack*>(m_stack.get())->GetPrevious() == nullptr)
 				{
 					error.Report("Cannot return in global namespace", ErrorPriority::RUNTIME_ERROR);
 					return nullptr;
 				}
 
 				auto res = m_expression->Execute();
-				m_stack = StackFrame::Close(m_stack);
+				m_stack->Close();
 				return res;
 			}
 
@@ -31,6 +31,6 @@ namespace Doer
 
 	private:
 		unique_ptr<ActionNode> m_expression;
-		StackFrame*& m_stack;
+		shared_ptr<Stack> m_stack;
 	};
 }

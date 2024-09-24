@@ -1,0 +1,19 @@
+[foo](n)
+{
+	if n == 0
+	{	
+		return 0;
+	}
+	return n + foo(n - 1);
+}
+
+[bar](n)
+{
+	if n == 0
+	{	
+		return 0;
+	}
+	return 0 - n - bar(n - 1);
+}
+
+a = foo(10) + bar(10);

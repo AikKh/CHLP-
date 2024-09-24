@@ -37,7 +37,8 @@ namespace Doer
 			{
 				return nullptr;
 			}
-			return m_methods.at(method)(shared_from_this(), std::move(args));
+			auto& m = m_methods.at(method);
+			return m(shared_from_this(), std::move(args));
 		}
 
 		~Object()

@@ -29,33 +29,9 @@ namespace Doer
 		static OperationFunction Lookup(Type t1, Type t2, MethodType mt);
 
 	private:
-		static OperationMap* InitializeMap();
+		static unique_ptr<OperationMap> InitializeMap();
 
 	private:
-		/*static Doer::Object::ObjectPtr IntAddInt(Doer::Object::ObjectPtr, Doer::Object::ObjectPtr);
-		static Doer::Object::ObjectPtr IntSubInt(Doer::Object::ObjectPtr, Doer::Object::ObjectPtr);
-		static Doer::Object::ObjectPtr IntMulInt(Doer::Object::ObjectPtr, Doer::Object::ObjectPtr);
-		static Doer::Object::ObjectPtr IntDivInt(Doer::Object::ObjectPtr, Doer::Object::ObjectPtr);
-		static Doer::Object::ObjectPtr IntModInt(Doer::Object::ObjectPtr, Doer::Object::ObjectPtr);
-
-		static Doer::Object::ObjectPtr FloatAddFloat(Doer::Object::ObjectPtr, Doer::Object::ObjectPtr);
-		static Doer::Object::ObjectPtr FloatSubFloat(Doer::Object::ObjectPtr, Doer::Object::ObjectPtr);
-		static Doer::Object::ObjectPtr FloatMulFloat(Doer::Object::ObjectPtr, Doer::Object::ObjectPtr);
-		static Doer::Object::ObjectPtr FloatDivFloat(Doer::Object::ObjectPtr, Doer::Object::ObjectPtr);
-		static Doer::Object::ObjectPtr FloatModFloat(Doer::Object::ObjectPtr, Doer::Object::ObjectPtr);
-
-		static Doer::Object::ObjectPtr FloatAddInt(Doer::Object::ObjectPtr, Doer::Object::ObjectPtr);
-		static Doer::Object::ObjectPtr FloatSubInt(Doer::Object::ObjectPtr, Doer::Object::ObjectPtr);
-		static Doer::Object::ObjectPtr FloatMulInt(Doer::Object::ObjectPtr, Doer::Object::ObjectPtr);
-		static Doer::Object::ObjectPtr FloatDivInt(Doer::Object::ObjectPtr, Doer::Object::ObjectPtr);
-		static Doer::Object::ObjectPtr FloatModInt(Doer::Object::ObjectPtr, Doer::Object::ObjectPtr);
-
-		static Doer::Object::ObjectPtr IntAddFloat(Doer::Object::ObjectPtr, Doer::Object::ObjectPtr);
-		static Doer::Object::ObjectPtr IntSubFloat(Doer::Object::ObjectPtr, Doer::Object::ObjectPtr);
-		static Doer::Object::ObjectPtr IntMulFloat(Doer::Object::ObjectPtr, Doer::Object::ObjectPtr);
-		static Doer::Object::ObjectPtr IntDivFloat(Doer::Object::ObjectPtr, Doer::Object::ObjectPtr);
-		static Doer::Object::ObjectPtr IntModFloat(Doer::Object::ObjectPtr, Doer::Object::ObjectPtr);*/
-
 		template<typename T1, typename T2, typename T3, MethodType method>
 		static Doer::Object::ObjectPtr Operation(Doer::Object::ObjectPtr, Doer::Object::ObjectPtr);
 	};

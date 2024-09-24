@@ -1,8 +1,10 @@
 #pragma once
 
+#include <memory>
+
 namespace Doer 
 {
-	class StackFrame;
+	class Stack;
 	class Validator;
 
 	class BinaryNode;
@@ -19,7 +21,7 @@ namespace Doer
 
 	class ActionTreeGenerator {
 	public:
-		ActionTreeGenerator(StackFrame*& stack_ref, const Validator& validtor);
+		ActionTreeGenerator(std::shared_ptr<Stack> stack, const Validator& validtor);
 
 		ActionNode* Visit(const BinaryNode* node);
 
@@ -45,7 +47,7 @@ namespace Doer
 		ActionNode* HandleOperation(const BinaryNode* node);
 
 	private:
-		StackFrame*& m_currentStack;
+		std::shared_ptr<Stack> m_stack;
 		const Validator& m_validtor;
 	};
 }

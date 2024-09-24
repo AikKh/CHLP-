@@ -182,6 +182,9 @@
     <ClInclude Include="h\ActionNodes\ReturnAction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="h\MemoryManagement\ObjectCache.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="tests\scope.dr" />
@@ -203,6 +206,8 @@
     <None Include="tests\fibonacci_with_keywords.dr" />
     <None Include="tests\new_stack_test.dr" />
     <None Include="tests\function_test.dr" />
+    <None Include="tests\new_stack_logic_test.dr" />
+    <None Include="tests\memory_leak_test.dr" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="SyntaxDesign\BNF_C.txt" />

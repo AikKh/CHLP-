@@ -3,9 +3,10 @@
 
 namespace Doer
 {
-    ObjectManager::OperationMap* Doer::ObjectManager::InitializeMap()
+    std::unique_ptr<ObjectManager::OperationMap> Doer::ObjectManager::InitializeMap()
     {
-        auto* map = new OperationMap();
+        auto map = std::make_unique<OperationMap>();
+
         // Int Int
         (*map)[std::make_tuple(Type::INT, Type::INT, MethodType::ADD)] = &Operation<int, int, int, MethodType::ADD>;
         (*map)[std::make_tuple(Type::INT, Type::INT, MethodType::SUB)] = &Operation<int, int, int, MethodType::SUB>;
@@ -101,7 +102,7 @@ namespace Doer
 
     ObjectManager::OperationFunction ObjectManager::Lookup(Type t1, Type t2, MethodType mt)
     {
-        static OperationMap* operationMap = InitializeMap();
+        static auto operationMap = InitializeMap();
 
         OperationMap::iterator entry = operationMap->find({ t1, t2, mt });
 

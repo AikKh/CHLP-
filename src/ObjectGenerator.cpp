@@ -135,12 +135,13 @@ const Object::ObjectPtr ObjectGenerator::GenerateNone()
 	return obj;
 }
 
-Object::ObjectPtr ObjectGenerator::GenerateFunction(FunctionCore func, StackFrame*& stack)
+Object::ObjectPtr ObjectGenerator::GenerateFunction(FunctionCore func, shared_ptr<Stack> stack)
 {
 	auto obj = std::make_shared<Object>(Type::FUNCTION, new FunctionCore{ std::move(func) });
 
-	obj->AddMethod(MethodType::CALL, [&stack](Object::ObjectPtr obj, vector<Object::ObjectPtr> args) -> Object::ObjectPtr
+	obj->AddMethod(MethodType::CALL, [st = std::weak_ptr(stack)](Object::ObjectPtr obj, vector<Object::ObjectPtr> args) -> Object::ObjectPtr
 		{
+			auto stack = st.lock();
 			const FunctionCore* core = static_cast<const FunctionCore*>(obj->GetPtr());
 
 			if (!AssertArgumentCount(Type::FUNCTION, core->GetArguments().size(), args.size()))

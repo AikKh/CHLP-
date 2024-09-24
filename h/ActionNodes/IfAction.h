@@ -8,8 +8,8 @@ namespace Doer
 
 	class IfAction : public ActionNode {
 	public:
-		IfAction(vector <unique_ptr< ActionNode >> conditions, vector <unique_ptr< ActionNode >> bodies, unique_ptr<ActionNode> else_body, StackFrame*& stack) :
-			m_conditions{ std::move(conditions) }, m_bodies{ std::move(bodies) }, m_else{ std::move(else_body) }, m_stack{ stack }
+		IfAction(vector <unique_ptr< ActionNode >> conditions, vector <unique_ptr< ActionNode >> bodies, unique_ptr<ActionNode> else_body, shared_ptr<Stack> stack) :
+			m_conditions{ std::move(conditions) }, m_bodies{ std::move(bodies) }, m_else{ std::move(else_body) }, m_stack{ std::move(stack) }
 		{
 			if (m_conditions.size() != m_bodies.size())
 			{
@@ -61,6 +61,6 @@ namespace Doer
 		vector <unique_ptr< ActionNode >> m_bodies;
 		unique_ptr<ActionNode> m_else;
 
-		StackFrame*& m_stack;
+		shared_ptr<Stack> m_stack;
 	};
 }

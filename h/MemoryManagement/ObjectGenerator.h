@@ -7,7 +7,7 @@ namespace Doer
 	// Create a separete class for creating having objects like true, false, none
 	//static const Object::ObjectPtr None;
 	class FunctionCore;
-	class StackFrame;
+	class Stack;
 
 	class ObjectGenerator {
 	public:
@@ -19,7 +19,7 @@ namespace Doer
 
 		static const Object::ObjectPtr GenerateNone();
 
-		static Object::ObjectPtr GenerateFunction(FunctionCore func, StackFrame*& stack);
+		static Object::ObjectPtr GenerateFunction(FunctionCore func, shared_ptr<Stack> stack);
 
 	private:
 		static bool AssertArgumentCount(Type type, std::size_t right_arg_count, std::size_t arg_count);

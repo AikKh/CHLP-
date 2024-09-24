@@ -1,0 +1,15 @@
+[foo](n)
+{
+	[bar](x)
+	{
+		return x * 2;
+	}
+
+	return bar(n) + 1;
+}
+
+r = foo(5);
+r = foo(6);
+r = foo(100);
+r = foo(12);
+

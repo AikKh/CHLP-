@@ -12,11 +12,9 @@ namespace Doer {
     class Enviroment {
     public:
 
-        // TODO: Open stack after action tree is generated 
-        Enviroment() : _stack{ StackFrame::Open() } {}
-
-        ~Enviroment() {
-            _stack = StackFrame::Close(_stack);
+        Enviroment()
+        {
+            m_stack = std::make_shared<Stack>();
         }
 
         int Run(const string& filename) {
@@ -66,7 +64,7 @@ namespace Doer {
             cout << "Generating action tree..." << endl;
 
             Validator validator;
-            ActionTreeGenerator generator{ _stack, validator };
+            ActionTreeGenerator generator{ m_stack, validator };
             ActionNode* action_tree = generator.Visit(root);
 
             if (!error.IsOk()) {
@@ -93,7 +91,7 @@ namespace Doer {
 
             cout << "======================== Stack Frame ========================" << endl;
 
-            _stack->Print();
+            m_stack->Print();
 
             cout << "=============================================================" << endl;
 
@@ -122,6 +120,6 @@ namespace Doer {
         }
 
     private:
-        StackFrame* _stack = nullptr;
+        shared_ptr<Stack> m_stack;
     };
 }

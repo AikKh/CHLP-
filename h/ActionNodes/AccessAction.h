@@ -7,8 +7,8 @@ namespace Doer {
 
 	class AccessAction : public ActionNode {
 	public:
-		AccessAction(StackFrame*& stack, const string& id) :
-			m_stack{ stack }, m_id{ id }
+		AccessAction(shared_ptr<Stack> stack, const string& id) :
+			m_stack{ std::move(stack) }, m_id{ id }
 		{}
 
 		shared_ptr<Object> Execute() const override
@@ -23,7 +23,7 @@ namespace Doer {
 		}
 
 	private:
-		StackFrame*&  m_stack;
+		const shared_ptr<Stack> m_stack;
 		const string& m_id;
 	};
 }
